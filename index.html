@@ -1,0 +1,573 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AssetSignal | AI signals for real estate portfolios</title>
+  <meta
+    name="description"
+    content="AssetSignal helps real estate teams spot NOI risk earlier by connecting P&Ls, leasing signals, and market context."
+  />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(90, 140, 255, 0.10), transparent 30%),
+        radial-gradient(circle at top right, rgba(0, 214, 143, 0.08), transparent 28%),
+        linear-gradient(180deg, #0b1020 0%, #0e1528 100%);
+      color: #f4f7fb;
+      line-height: 1.5;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .container {
+      width: min(1120px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 22px 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      font-size: 20px;
+      letter-spacing: 0.2px;
+    }
+
+    .brand-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #7dd3fc, #6ee7b7);
+      box-shadow: 0 0 24px rgba(125, 211, 252, 0.45);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 13px 18px;
+      border-radius: 14px;
+      font-weight: 600;
+      transition: 0.2s ease;
+      border: 1px solid transparent;
+      white-space: nowrap;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #8ad8ff, #7cefc4);
+      color: #09111c;
+      box-shadow: 0 10px 30px rgba(125, 211, 252, 0.18);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.03);
+      border-color: rgba(255, 255, 255, 0.08);
+      color: #f4f7fb;
+    }
+
+    .hero {
+      padding: 44px 0 36px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(125, 211, 252, 0.08);
+      border: 1px solid rgba(125, 211, 252, 0.15);
+      color: #bfe9ff;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      margin: 0 0 18px;
+      font-size: clamp(42px, 7vw, 72px);
+      line-height: 0.98;
+      letter-spacing: -0.03em;
+      max-width: 700px;
+    }
+
+    .hero p {
+      margin: 0;
+      max-width: 620px;
+      font-size: clamp(18px, 2.4vw, 21px);
+      color: #c6d1e3;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 28px;
+    }
+
+    .hero-note {
+      margin-top: 16px;
+      color: #91a4c4;
+      font-size: 14px;
+    }
+
+    .dashboard-shell {
+      position: relative;
+      border-radius: 24px;
+      padding: 14px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.35),
+        0 0 0 1px rgba(255,255,255,0.03) inset;
+    }
+
+    .dashboard-topbar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+      padding-left: 6px;
+    }
+
+    .dashboard-topbar span {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.22);
+    }
+
+    .dashboard-frame {
+      overflow: hidden;
+      border-radius: 18px;
+      background: #11192f;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .dashboard-frame img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .dashboard-placeholder {
+      padding: 24px;
+      min-height: 360px;
+      display: grid;
+      gap: 14px;
+      background:
+        linear-gradient(180deg, rgba(125, 211, 252, 0.04), rgba(110, 231, 183, 0.02)),
+        #10182d;
+    }
+
+    .mini-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .mini-card,
+    .mini-wide {
+      border-radius: 16px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .mini-card {
+      height: 78px;
+    }
+
+    .mini-wide {
+      height: 140px;
+    }
+
+    .section {
+      padding: 32px 0;
+    }
+
+    .value-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      padding: 22px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.16);
+    }
+
+    .card h3 {
+      margin: 0 0 10px;
+      font-size: 20px;
+    }
+
+    .card p {
+      margin: 0;
+      color: #b8c6da;
+      font-size: 15px;
+    }
+
+    .cta-box {
+      padding: 28px;
+      border-radius: 28px;
+      background:
+        linear-gradient(135deg, rgba(125,211,252,0.08), rgba(110,231,183,0.06)),
+        rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.09);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .cta-box h2 {
+      margin: 0 0 8px;
+      font-size: clamp(28px, 4vw, 38px);
+      line-height: 1.05;
+    }
+
+    .cta-box p {
+      margin: 0;
+      color: #bcc7da;
+      max-width: 650px;
+    }
+
+    .footer {
+      padding: 28px 0 42px;
+      color: #8798b6;
+      font-size: 14px;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 8, 18, 0.72);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 50;
+    }
+
+    .modal-overlay.show {
+      display: flex;
+    }
+
+    .modal {
+      width: min(520px, 100%);
+      background: linear-gradient(180deg, rgba(22,29,51,0.98), rgba(14,20,40,0.98));
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.45);
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #dbe7f6;
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .modal h3 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.05;
+    }
+
+    .modal p {
+      margin: 0 0 18px;
+      color: #bcc7da;
+    }
+
+    .modal form {
+      display: grid;
+      gap: 12px;
+    }
+
+    .modal input,
+    .modal textarea {
+      width: 100%;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.04);
+      color: #f4f7fb;
+      border-radius: 14px;
+      padding: 14px 15px;
+      font: inherit;
+      outline: none;
+    }
+
+    .modal input::placeholder,
+    .modal textarea::placeholder {
+      color: #8193b1;
+    }
+
+    .modal textarea {
+      min-height: 96px;
+      resize: vertical;
+    }
+
+    .fine-print {
+      font-size: 12px;
+      color: #8da0be;
+      margin-top: 8px;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid,
+      .value-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .mini-row {
+        grid-template-columns: 1fr;
+      }
+
+      .dashboard-placeholder {
+        min-height: 280px;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .container {
+        width: min(100% - 24px, 1120px);
+      }
+
+      .nav {
+        padding: 16px 0;
+      }
+
+      .hero {
+        padding-top: 24px;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .card,
+      .cta-box,
+      .modal {
+        padding: 20px;
+      }
+
+      .section {
+        padding: 24px 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <nav class="nav">
+      <div class="brand">
+        <span class="brand-dot"></span>
+        <span>AssetSignal</span>
+      </div>
+      <button class="btn btn-primary" onclick="openModal('General Interest')">Join Pilot</button>
+    </nav>
+
+    <section class="hero">
+      <div class="hero-grid">
+        <div>
+          <div class="eyebrow">AI for real estate asset management</div>
+          <h1>Know where NOI risk is forming before it hits your P&amp;L.</h1>
+          <p>
+            AssetSignal connects property financials, leasing momentum, and market context
+            into one clear decision layer for modern real estate teams.
+          </p>
+
+          <div class="hero-actions">
+            <button class="btn btn-primary" onclick="openModal('Upload a P&L')">Upload a P&amp;L</button>
+            <button class="btn btn-secondary" onclick="openModal('Run Portfolio Analysis')">Run Portfolio Analysis</button>
+          </div>
+
+          <div class="hero-note">
+            Currently onboarding a limited number of early pilot users.
+          </div>
+        </div>
+
+        <div class="dashboard-shell">
+          <div class="dashboard-topbar">
+            <span></span><span></span><span></span>
+          </div>
+          <div class="dashboard-frame">
+            <!-- Replace this placeholder with your actual screenshot:
+                 <img src="images/hero-dashboard.png" alt="AssetSignal dashboard preview" />
+            -->
+            <div class="dashboard-placeholder">
+              <div class="mini-row">
+                <div class="mini-card"></div>
+                <div class="mini-card"></div>
+                <div class="mini-card"></div>
+              </div>
+              <div class="mini-wide"></div>
+              <div class="mini-row">
+                <div class="mini-card"></div>
+                <div class="mini-card"></div>
+                <div class="mini-card"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="value-grid">
+        <div class="card">
+          <h3>Find NOI risk earlier</h3>
+          <p>
+            Connect financial variance with operational changes before issues fully show up in month-end reporting.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>Track leasing momentum</h3>
+          <p>
+            See changes in prelease and velocity sooner, so teams can react faster and more confidently.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>Monitor market pressure</h3>
+          <p>
+            Spot competitor pricing shifts and concession intensity around each asset with better context.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="cta-box">
+        <div>
+          <h2>Bring signal clarity to your portfolio.</h2>
+          <p>
+            AssetSignal is designed for lean real estate teams that want faster insight across performance, leasing, and market risk.
+          </p>
+        </div>
+        <button class="btn btn-primary" onclick="openModal('Join the Pilot')">Request Access</button>
+      </div>
+    </section>
+
+    <footer class="footer">
+      © 2026 AssetSignal. All rights reserved.
+    </footer>
+  </div>
+
+  <div class="modal-overlay" id="signupModal" onclick="handleOverlayClick(event)">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal()" aria-label="Close">×</button>
+      <h3 id="modalTitle">Join the AssetSignal pilot</h3>
+      <p>
+        We’re onboarding a small number of early users from real estate investment and asset management teams.
+      </p>
+
+      <!-- Replace action with your Formspree / Tally / Google Form endpoint later -->
+      <form onsubmit="submitForm(event)">
+        <input type="hidden" id="interestField" name="interest" value="General Interest" />
+        <input type="text" name="name" placeholder="Your name" required />
+        <input type="email" name="email" placeholder="Work email" required />
+        <input type="text" name="company" placeholder="Company" />
+        <textarea name="message" placeholder="Anything you'd want AssetSignal to help with?"></textarea>
+        <button class="btn btn-primary" type="submit">Request Access</button>
+      </form>
+
+      <div class="fine-print">
+        For now, this demo form stays on the page. Later you can connect it to Formspree, Tally, HubSpot, or your email.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openModal(source) {
+      document.getElementById("signupModal").classList.add("show");
+      document.getElementById("interestField").value = source;
+      document.getElementById("modalTitle").textContent = source === "General Interest"
+        ? "Join the AssetSignal pilot"
+        : source;
+    }
+
+    function closeModal() {
+      document.getElementById("signupModal").classList.remove("show");
+    }
+
+    function handleOverlayClick(event) {
+      if (event.target.id === "signupModal") {
+        closeModal();
+      }
+    }
+
+    function submitForm(event) {
+      event.preventDefault();
+      alert("Thanks — your interest has been captured. Next, connect this form to Tally, Formspree, or your CRM.");
+      closeModal();
+      event.target.reset();
+    }
+
+    document.addEventListener("keydown", function(event) {
+      if (event.key === "Escape") {
+        closeModal();
+      }
+    });
+  </script>
+</body>
+</html>
