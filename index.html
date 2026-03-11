@@ -38,6 +38,12 @@
       display: block;
     }
 
+    button,
+    input,
+    textarea {
+      font: inherit;
+    }
+
     .container {
       width: min(1120px, calc(100% - 40px));
       margin: 0 auto;
@@ -75,7 +81,7 @@
       padding: 13px 18px;
       border-radius: 14px;
       font-weight: 600;
-      transition: 0.2s ease;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
       border: 1px solid transparent;
       white-space: nowrap;
       cursor: pointer;
@@ -99,7 +105,7 @@
     }
 
     .hero {
-      padding: 44px 0 36px;
+      padding: 44px 0 40px;
     }
 
     .hero-grid {
@@ -151,8 +157,26 @@
       font-size: 14px;
     }
 
+    .dashboard-glow {
+      position: relative;
+    }
+
+    .dashboard-glow::before {
+      content: "";
+      position: absolute;
+      inset: -14px;
+      border-radius: 34px;
+      background:
+        radial-gradient(circle at top left, rgba(125, 211, 252, 0.20), transparent 35%),
+        radial-gradient(circle at bottom right, rgba(110, 231, 183, 0.14), transparent 30%);
+      filter: blur(18px);
+      z-index: 0;
+      pointer-events: none;
+    }
+
     .dashboard-shell {
       position: relative;
+      z-index: 1;
       border-radius: 24px;
       padding: 14px;
       background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
@@ -164,60 +188,111 @@
 
     .dashboard-topbar {
       display: flex;
-      gap: 8px;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
       margin-bottom: 12px;
-      padding-left: 6px;
+      padding: 0 6px;
     }
 
-    .dashboard-topbar span {
+    .dots {
+      display: flex;
+      gap: 8px;
+    }
+
+    .dots span {
       width: 10px;
       height: 10px;
       border-radius: 999px;
       background: rgba(255,255,255,0.22);
     }
 
+    .slider-label {
+      font-size: 12px;
+      color: #8fa3c4;
+      letter-spacing: 0.02em;
+    }
+
     .dashboard-frame {
+      position: relative;
       overflow: hidden;
       border-radius: 18px;
       background: #11192f;
       border: 1px solid rgba(255,255,255,0.08);
+      aspect-ratio: 16 / 10;
     }
 
-    .dashboard-frame img {
+    .slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.7s ease;
+      pointer-events: none;
+    }
+
+    .slide.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .slide img {
       width: 100%;
-      height: auto;
-      display: block;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
     }
 
-    .dashboard-placeholder {
-      padding: 24px;
-      min-height: 360px;
-      display: grid;
+    .slider-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       gap: 14px;
-      background:
-        linear-gradient(180deg, rgba(125, 211, 252, 0.04), rgba(110, 231, 183, 0.02)),
-        #10182d;
+      margin-top: 14px;
+      padding: 0 4px;
     }
 
-    .mini-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
+    .slider-dots {
+      display: flex;
+      gap: 8px;
+      align-items: center;
     }
 
-    .mini-card,
-    .mini-wide {
-      border-radius: 16px;
+    .slider-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.22);
+      transition: all 0.25s ease;
+      cursor: pointer;
+    }
+
+    .slider-dot.active {
+      width: 24px;
+      background: linear-gradient(135deg, #8ad8ff, #7cefc4);
+    }
+
+    .slider-buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    .slider-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.10);
       background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.06);
+      color: #dbe7f6;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.2s ease;
     }
 
-    .mini-card {
-      height: 78px;
-    }
-
-    .mini-wide {
-      height: 140px;
+    .slider-btn:hover {
+      background: rgba(255,255,255,0.09);
+      transform: translateY(-1px);
     }
 
     .section {
@@ -320,6 +395,7 @@
       border-radius: 999px;
       cursor: pointer;
       font-size: 18px;
+      line-height: 1;
     }
 
     .modal h3 {
@@ -346,7 +422,6 @@
       color: #f4f7fb;
       border-radius: 14px;
       padding: 14px 15px;
-      font: inherit;
       outline: none;
     }
 
@@ -366,18 +441,21 @@
       margin-top: 8px;
     }
 
+    .status-message {
+      min-height: 20px;
+      margin-top: 8px;
+      font-size: 14px;
+      color: #bfe9ff;
+    }
+
     @media (max-width: 980px) {
       .hero-grid,
       .value-grid {
         grid-template-columns: 1fr;
       }
 
-      .mini-row {
-        grid-template-columns: 1fr;
-      }
-
-      .dashboard-placeholder {
-        min-height: 280px;
+      .dashboard-frame {
+        aspect-ratio: 16 / 9;
       }
     }
 
@@ -412,6 +490,10 @@
       .section {
         padding: 24px 0;
       }
+
+      .slider-controls {
+        flex-wrap: wrap;
+      }
     }
   </style>
 </head>
@@ -422,7 +504,9 @@
         <span class="brand-dot"></span>
         <span>AssetSignal</span>
       </div>
-      <button class="btn btn-primary" onclick="openModal('General Interest')">Join Pilot</button>
+      <button class="btn btn-primary cta-trigger" type="button" data-source="Join Pilot">
+        Join Pilot
+      </button>
     </nav>
 
     <section class="hero">
@@ -436,8 +520,12 @@
           </p>
 
           <div class="hero-actions">
-            <button class="btn btn-primary" onclick="openModal('Upload a P&L')">Upload a P&amp;L</button>
-            <button class="btn btn-secondary" onclick="openModal('Run Portfolio Analysis')">Run Portfolio Analysis</button>
+            <button class="btn btn-primary cta-trigger" type="button" data-source="Upload a P&L">
+              Upload a P&amp;L
+            </button>
+            <button class="btn btn-secondary cta-trigger" type="button" data-source="Run Portfolio Analysis">
+              Run Portfolio Analysis
+            </button>
           </div>
 
           <div class="hero-note">
@@ -445,25 +533,41 @@
           </div>
         </div>
 
-        <div class="dashboard-shell">
-          <div class="dashboard-topbar">
-            <span></span><span></span><span></span>
-          </div>
-          <div class="dashboard-frame">
-            <!-- Replace this placeholder with your actual screenshot:
-                 <img src="images/hero-dashboard.png" alt="AssetSignal dashboard preview" />
-            -->
-            <div class="dashboard-placeholder">
-              <div class="mini-row">
-                <div class="mini-card"></div>
-                <div class="mini-card"></div>
-                <div class="mini-card"></div>
+        <div class="dashboard-glow">
+          <div class="dashboard-shell">
+            <div class="dashboard-topbar">
+              <div class="dots">
+                <span></span><span></span><span></span>
               </div>
-              <div class="mini-wide"></div>
-              <div class="mini-row">
-                <div class="mini-card"></div>
-                <div class="mini-card"></div>
-                <div class="mini-card"></div>
+              <div class="slider-label">Product Preview</div>
+            </div>
+
+            <div class="dashboard-frame" id="screenshotSlider">
+              <div class="slide active">
+                <img src="images/screenshot1.png" alt="AssetSignal product screenshot 1" />
+              </div>
+              <div class="slide">
+                <img src="images/screenshot2.png" alt="AssetSignal product screenshot 2" />
+              </div>
+              <div class="slide">
+                <img src="images/screenshot3.png" alt="AssetSignal product screenshot 3" />
+              </div>
+              <div class="slide">
+                <img src="images/screenshot4.png" alt="AssetSignal product screenshot 4" />
+              </div>
+            </div>
+
+            <div class="slider-controls">
+              <div class="slider-dots" id="sliderDots">
+                <button class="slider-dot active" type="button" aria-label="Go to slide 1"></button>
+                <button class="slider-dot" type="button" aria-label="Go to slide 2"></button>
+                <button class="slider-dot" type="button" aria-label="Go to slide 3"></button>
+                <button class="slider-dot" type="button" aria-label="Go to slide 4"></button>
+              </div>
+
+              <div class="slider-buttons">
+                <button class="slider-btn" id="prevSlide" type="button" aria-label="Previous slide">‹</button>
+                <button class="slider-btn" id="nextSlide" type="button" aria-label="Next slide">›</button>
               </div>
             </div>
           </div>
@@ -504,7 +608,9 @@
             AssetSignal is designed for lean real estate teams that want faster insight across performance, leasing, and market risk.
           </p>
         </div>
-        <button class="btn btn-primary" onclick="openModal('Join the Pilot')">Request Access</button>
+        <button class="btn btn-primary cta-trigger" type="button" data-source="Request Access">
+          Request Access
+        </button>
       </div>
     </section>
 
@@ -514,40 +620,63 @@
   </div>
 
   <div class="modal-overlay" id="signupModal" onclick="handleOverlayClick(event)">
-    <div class="modal">
-      <button class="modal-close" onclick="closeModal()" aria-label="Close">×</button>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button class="modal-close" type="button" onclick="closeModal()" aria-label="Close">×</button>
+
       <h3 id="modalTitle">Join the AssetSignal pilot</h3>
       <p>
         We’re onboarding a small number of early users from real estate investment and asset management teams.
       </p>
 
-      <!-- Replace action with your Formspree / Tally / Google Form endpoint later -->
-      <form onsubmit="submitForm(event)">
-        <input type="hidden" id="interestField" name="interest" value="General Interest" />
+      <form
+        id="leadForm"
+        action="https://formspree.io/f/xeeravbj"
+        method="POST"
+      >
+        <input type="hidden" name="source" id="sourceField" value="Join Pilot" />
+        <input type="hidden" name="_subject" id="subjectField" value="AssetSignal Lead - Join Pilot" />
+        <input type="hidden" name="_captcha" value="false" />
+
         <input type="text" name="name" placeholder="Your name" required />
         <input type="email" name="email" placeholder="Work email" required />
         <input type="text" name="company" placeholder="Company" />
         <textarea name="message" placeholder="Anything you'd want AssetSignal to help with?"></textarea>
-        <button class="btn btn-primary" type="submit">Request Access</button>
+
+        <button class="btn btn-primary" type="submit" id="submitButton">
+          Request Access
+        </button>
       </form>
 
+      <div class="status-message" id="statusMessage"></div>
+
       <div class="fine-print">
-        For now, this demo form stays on the page. Later you can connect it to Formspree, Tally, HubSpot, or your email.
+        Submissions go directly to your Formspree inbox.
       </div>
     </div>
   </div>
 
   <script>
+    const modal = document.getElementById("signupModal");
+    const modalTitle = document.getElementById("modalTitle");
+    const sourceField = document.getElementById("sourceField");
+    const subjectField = document.getElementById("subjectField");
+    const leadForm = document.getElementById("leadForm");
+    const submitButton = document.getElementById("submitButton");
+    const statusMessage = document.getElementById("statusMessage");
+    const ctaButtons = document.querySelectorAll(".cta-trigger");
+
     function openModal(source) {
-      document.getElementById("signupModal").classList.add("show");
-      document.getElementById("interestField").value = source;
-      document.getElementById("modalTitle").textContent = source === "General Interest"
-        ? "Join the AssetSignal pilot"
-        : source;
+      modal.classList.add("show");
+      document.body.style.overflow = "hidden";
+      modalTitle.textContent = source;
+      sourceField.value = source;
+      subjectField.value = "AssetSignal Lead - " + source;
+      statusMessage.textContent = "";
     }
 
     function closeModal() {
-      document.getElementById("signupModal").classList.remove("show");
+      modal.classList.remove("show");
+      document.body.style.overflow = "";
     }
 
     function handleOverlayClick(event) {
@@ -556,18 +685,117 @@
       }
     }
 
-    function submitForm(event) {
-      event.preventDefault();
-      alert("Thanks — your interest has been captured. Next, connect this form to Tally, Formspree, or your CRM.");
-      closeModal();
-      event.target.reset();
-    }
+    ctaButtons.forEach((button) => {
+      button.addEventListener("click", function () {
+        const source = this.getAttribute("data-source") || "Join Pilot";
+        openModal(source);
+      });
+    });
 
-    document.addEventListener("keydown", function(event) {
+    leadForm.addEventListener("submit", async function (event) {
+      event.preventDefault();
+
+      submitButton.disabled = true;
+      submitButton.style.opacity = "0.7";
+      statusMessage.textContent = "Submitting...";
+
+      const formData = new FormData(leadForm);
+
+      try {
+        const response = await fetch(leadForm.action, {
+          method: "POST",
+          body: formData,
+          headers: {
+            "Accept": "application/json"
+          }
+        });
+
+        if (response.ok) {
+          statusMessage.textContent = "Thanks — your request has been submitted.";
+          leadForm.reset();
+
+          setTimeout(() => {
+            closeModal();
+            sourceField.value = "Join Pilot";
+            subjectField.value = "AssetSignal Lead - Join Pilot";
+            modalTitle.textContent = "Join the AssetSignal pilot";
+            statusMessage.textContent = "";
+          }, 1200);
+        } else {
+          statusMessage.textContent = "Something went wrong. Please try again.";
+        }
+      } catch (error) {
+        statusMessage.textContent = "Something went wrong. Please try again.";
+      } finally {
+        submitButton.disabled = false;
+        submitButton.style.opacity = "1";
+      }
+    });
+
+    document.addEventListener("keydown", function (event) {
       if (event.key === "Escape") {
         closeModal();
       }
     });
+
+    const slides = document.querySelectorAll(".slide");
+    const dots = document.querySelectorAll(".slider-dot");
+    const prevSlideButton = document.getElementById("prevSlide");
+    const nextSlideButton = document.getElementById("nextSlide");
+
+    let currentSlide = 0;
+    let autoRotate;
+
+    function showSlide(index) {
+      slides.forEach((slide, i) => {
+        slide.classList.toggle("active", i === index);
+      });
+
+      dots.forEach((dot, i) => {
+        dot.classList.toggle("active", i === index);
+      });
+
+      currentSlide = index;
+    }
+
+    function nextSlide() {
+      const nextIndex = (currentSlide + 1) % slides.length;
+      showSlide(nextIndex);
+    }
+
+    function prevSlide() {
+      const prevIndex = (currentSlide - 1 + slides.length) % slides.length;
+      showSlide(prevIndex);
+    }
+
+    function startAutoRotate() {
+      autoRotate = setInterval(nextSlide, 3000);
+    }
+
+    function resetAutoRotate() {
+      clearInterval(autoRotate);
+      startAutoRotate();
+    }
+
+    dots.forEach((dot, index) => {
+      dot.addEventListener("click", () => {
+        showSlide(index);
+        resetAutoRotate();
+      });
+    });
+
+    prevSlideButton.addEventListener("click", () => {
+      prevSlide();
+      resetAutoRotate();
+    });
+
+    nextSlideButton.addEventListener("click", () => {
+      nextSlide();
+      resetAutoRotate();
+    });
+
+    showSlide(0);
+    startAutoRotate();
   </script>
 </body>
 </html>
