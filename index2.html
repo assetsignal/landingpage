@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Asset Signal</title>
+  <style>
+    :root {
+      --bg: #07101d;
+      --bg-2: #0b1627;
+      --panel: rgba(255, 255, 255, 0.05);
+      --panel-2: rgba(255, 255, 255, 0.04);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-strong: rgba(255, 255, 255, 0.12);
+      --text: #ffffff;
+      --muted: #b8c4d6;
+      --muted-2: #8fa0b9;
+      --green: #46b04a;
+      --green-hover: #5ac95f;
+      --blue: #1a9ed8;
+      --shadow: 0 24px 70px rgba(0, 0, 0, 0.42);
+      --radius: 22px;
+      --max-width: 1400px;
+      --section-space: 56px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 10% 8%, rgba(26, 158, 216, 0.14), transparent 24%),
+        radial-gradient(circle at 90% 4%, rgba(70, 176, 74, 0.11), transparent 18%),
+        linear-gradient(180deg, #09111d 0%, #07101d 48%, #0a1525 100%);
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input,
+    textarea {
+      font: inherit;
+    }
+
+    .container {
+      width: min(var(--max-width), calc(100% - 56px));
+      margin: 0 auto;
+    }
+
+    .site-header {
+      padding-top: 18px;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 16px 20px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(12px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-logo {
+      width: 42px;
+      height: 42px;
+      object-fit: contain;
+      background: rgba(255,255,255,0.98);
+      border-radius: 10px;
+      padding: 4px;
+      flex-shrink: 0;
+    }
+
+    .brand-name {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .nav-link {
+      font-size: 14px;
+      color: var(--muted);
+      transition: color 0.2s ease;
+    }
+
+    .nav-link:hover {
+      color: #ffffff;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 22px;
+      border-radius: 12px;
+      border: none;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+
+    .btn-primary {
+      background: var(--green);
+      color: #ffffff;
+      box-shadow: 0 12px 28px rgba(70, 176, 74, 0.22);
+    }
+
+    .btn-primary:hover {
+      background: var(--green-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      color: #ffffff;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.07);
+      transform: translateY(-1px);
+    }
+
+    .hero {
+      padding: 50px 0 44px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+      gap: 44px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      padding: 10px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.05);
+      color: #92d9ff;
+      font-size: 14px;
+      margin-bottom: 18px;
+    }
+
+    .hero h1 {
+      margin: 0 0 16px;
+      font-size: clamp(44px, 5.8vw, 72px);
+      line-height: 1.02;
+      letter-spacing: -0.045em;
+      max-width: 760px;
+    }
+
+    .hero-subtext {
+      margin: 0;
+      color: var(--muted);
+      font-size: clamp(18px, 1.55vw, 20px);
+      line-height: 1.72;
+      max-width: 690px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 26px;
+    }
+
+    .hero-supporting {
+      margin-top: 14px;
+      font-size: 14px;
+      color: var(--muted-2);
+      line-height: 1.7;
+    }
+
+    .hero-qualifier {
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255,255,255,0.07);
+      font-size: 15px;
+      color: #dbe6f5;
+      line-height: 1.7;
+      max-width: 740px;
+    }
+
+    .hero-qualifier strong {
+      color: #ffffff;
+    }
+
+    .hero-visual {
+      position: relative;
+      min-height: 560px;
+      isolation: isolate;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-visual::before {
+      content: "";
+      position: absolute;
+      inset: 24px 0 8px 0;
+      border-radius: 30px;
+      background:
+        radial-gradient(circle at 74% 18%, rgba(26, 158, 216, 0.24), transparent 28%),
+        radial-gradient(circle at 22% 78%, rgba(70, 176, 74, 0.18), transparent 24%),
+        linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px);
+      background-size: auto, auto, 38px 38px, 38px 38px;
+      opacity: 0.52;
+      z-index: 0;
+    }
+
+    .screenshots-stage {
+      position: relative;
+      width: 100%;
+      max-width: 760px;
+      height: 540px;
+      z-index: 1;
+    }
+
+    .shot {
+      position: absolute;
+      overflow: hidden;
+      border-radius: 24px;
+      border: 1px solid var(--border-strong);
+      box-shadow: var(--shadow);
+      background: #0f1a2c;
+    }
+
+    .shot img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: saturate(0.98) contrast(1.02);
+    }
+
+    .shot-main {
+      width: 78%;
+      height: 400px;
+      right: 0;
+      top: 72px;
+      z-index: 3;
+    }
+
+    .shot-top {
+      width: 34%;
+      height: 200px;
+      left: 0;
+      top: 18px;
+      z-index: 2;
+    }
+
+    .shot-bottom {
+      width: 40%;
+      height: 225px;
+      left: 7%;
+      bottom: 18px;
+      z-index: 2;
+    }
+
+    .section {
+      padding: var(--section-space) 0;
+    }
+
+    .section-heading {
+      text-align: center;
+      max-width: 840px;
+      margin: 0 auto 14px;
+    }
+
+    .section-heading h2 {
+      margin: 0 0 10px;
+      font-size: clamp(30px, 4vw, 42px);
+      line-height: 1.08;
+      letter-spacing: -0.035em;
+    }
+
+    .section-heading p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.72;
+    }
+
+    .problem-copy {
+      max-width: 860px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .problem-copy p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.78;
+    }
+
+    .split-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+      margin-top: 28px;
+    }
+
+    .feature-panel {
+      padding: 26px;
+      border-radius: 24px;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.03));
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .feature-panel:hover,
+    .step-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(255,255,255,0.12);
+    }
+
+    .feature-panel h3 {
+      margin: 0 0 12px;
+      font-size: 25px;
+      line-height: 1.12;
+      letter-spacing: -0.03em;
+    }
+
+    .feature-panel p {
+      margin: 0 0 16px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.72;
+    }
+
+    .feature-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .feature-item {
+      padding: 13px 15px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      color: #dce6f4;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 28px;
+    }
+
+    .step-card {
+      padding: 24px;
+      border-radius: 22px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .step-number {
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+      background: rgba(26, 158, 216, 0.16);
+      color: #93dcff;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .step-card h3 {
+      margin: 0 0 10px;
+      font-size: 21px;
+      letter-spacing: -0.02em;
+    }
+
+    .step-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.72;
+    }
+
+    .cta-box {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 32px 28px;
+      border-radius: 26px;
+      text-align: center;
+      border: 1px solid var(--border);
+      background:
+        radial-gradient(circle at top right, rgba(70, 176, 74, 0.12), transparent 28%),
+        radial-gradient(circle at top left, rgba(26, 158, 216, 0.10), transparent 24%),
+        rgba(255,255,255,0.04);
+    }
+
+    .cta-box h2 {
+      margin: 0 0 10px;
+      font-size: clamp(30px, 4vw, 40px);
+      letter-spacing: -0.035em;
+    }
+
+    .cta-box p {
+      max-width: 740px;
+      margin: 0 auto;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.74;
+    }
+
+    .cta-actions {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 22px;
+    }
+
+    .cta-supporting {
+      margin-top: 12px;
+      font-size: 14px;
+      color: var(--muted-2);
+    }
+
+    footer {
+      padding: 14px 0 32px;
+      text-align: center;
+      color: var(--muted-2);
+      font-size: 14px;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 10, 20, 0.76);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 9999;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 560px;
+      padding: 30px;
+      border-radius: 24px;
+      background: #0f1a2d;
+      border: 1px solid rgba(255,255,255,0.10);
+      box-shadow: 0 28px 64px rgba(0,0,0,0.45);
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      background: transparent;
+      border: none;
+      color: #c4d0e2;
+      font-size: 28px;
+      cursor: pointer;
+      line-height: 1;
+      padding: 0;
+    }
+
+    .modal-box h3 {
+      margin: 0 0 10px;
+      font-size: 30px;
+      letter-spacing: -0.03em;
+    }
+
+    .modal-subtext {
+      margin: 0 0 22px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.72;
+    }
+
+    .modal-form {
+      display: grid;
+      gap: 14px;
+    }
+
+    .modal-form label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #e8eef9;
+    }
+
+    .modal-form input,
+    .modal-form textarea {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.04);
+      color: #ffffff;
+      padding: 14px;
+      outline: none;
+    }
+
+    .modal-form textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .modal-form input::placeholder,
+    .modal-form textarea::placeholder {
+      color: #8ea0ba;
+    }
+
+    .modal-form input:focus,
+    .modal-form textarea:focus {
+      border-color: rgba(26, 158, 216, 0.7);
+      box-shadow: 0 0 0 3px rgba(26, 158, 216, 0.12);
+    }
+
+    .modal-submit {
+      width: 100%;
+      margin-top: 6px;
+    }
+
+    @media (max-width: 1100px) {
+      .hero-grid,
+      .split-grid,
+      .steps-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding-top: 40px;
+        padding-bottom: 40px;
+      }
+
+      .hero-grid {
+        gap: 34px;
+      }
+
+      .hero-visual {
+        min-height: 430px;
+      }
+
+      .screenshots-stage {
+        height: 430px;
+        max-width: 620px;
+        margin: 0 auto;
+      }
+
+      .shot-main {
+        height: 300px;
+      }
+
+      .shot-top {
+        height: 160px;
+      }
+
+      .shot-bottom {
+        height: 180px;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .container {
+        width: min(var(--max-width), calc(100% - 24px));
+      }
+
+      .site-header {
+        padding-top: 12px;
+      }
+
+      .nav {
+        padding: 12px 14px;
+      }
+
+      .nav-right .nav-link {
+        display: none;
+      }
+
+      .brand-logo {
+        width: 38px;
+        height: 38px;
+      }
+
+      .brand-name {
+        font-size: 16px;
+      }
+
+      .hero {
+        padding: 22px 0 34px;
+      }
+
+      .hero h1 {
+        font-size: 40px;
+      }
+
+      .hero-subtext,
+      .section-heading p,
+      .problem-copy p,
+      .feature-panel p,
+      .step-card p,
+      .cta-box p {
+        font-size: 15px;
+        line-height: 1.7;
+      }
+
+      .hero-actions,
+      .cta-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .hero-visual {
+        min-height: 300px;
+      }
+
+      .screenshots-stage {
+        height: 300px;
+        max-width: 100%;
+      }
+
+      .shot-main {
+        width: 80%;
+        height: 210px;
+        right: 0;
+        top: 52px;
+      }
+
+      .shot-top {
+        width: 34%;
+        height: 110px;
+        left: 0;
+        top: 10px;
+      }
+
+      .shot-bottom {
+        width: 38%;
+        height: 126px;
+        left: 4%;
+        bottom: 6px;
+      }
+
+      .feature-panel,
+      .step-card,
+      .cta-box,
+      .modal-box {
+        padding: 22px;
+      }
+
+      .modal-box h3 {
+        font-size: 26px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <div class="nav">
+        <div class="brand">
+          <img class="brand-logo" src="images/logo.png" alt="Asset Signal logo" />
+          <div class="brand-name">Asset Signal</div>
+        </div>
+
+        <div class="nav-right">
+          <a class="nav-link" href="#recommendation">Recommendation</a>
+          <a class="nav-link" href="#how-it-works">How It Works</a>
+          <button class="btn btn-primary" type="button" onclick="openPilotModal()">Apply for the Pilot</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <div class="hero-grid">
+          <div>
+            <div class="eyebrow">Built by real estate asset managers</div>
+
+            <h1>Turn property P&amp;L into strategic decisions.</h1>
+
+            <p class="hero-subtext">
+              Asset Signal turns property financials and local market signals into actionable recommendations for every asset in your portfolio.
+            </p>
+
+            <div class="hero-actions">
+              <button class="btn btn-primary" type="button" onclick="openPilotModal()">
+                Apply for the Pilot
+              </button>
+              <button class="btn btn-secondary" type="button" onclick="openUploadModal()">
+                Submit a Sample P&amp;L
+              </button>
+            </div>
+
+            <div class="hero-supporting">
+              Surface revenue upside, expense reduction opportunities, and market risk in seconds.
+            </div>
+
+            <div class="hero-qualifier">
+              <strong>Built for real estate private equity, asset management, and portfolio management teams.</strong><br />
+              Currently onboarding a limited number of pilot users.
+            </div>
+          </div>
+
+          <div class="hero-visual">
+            <div class="screenshots-stage">
+              <div class="shot shot-main">
+                <img src="images/screenshot1.png" alt="Asset Signal main dashboard screenshot" />
+              </div>
+              <div class="shot shot-top">
+                <img src="images/screenshot2.png" alt="Asset Signal dashboard detail screenshot" />
+              </div>
+              <div class="shot shot-bottom">
+                <img src="images/screenshot3.png" alt="Asset Signal market intelligence screenshot" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-heading">
+          <h2>The Problem</h2>
+        </div>
+
+        <div class="problem-copy">
+          <p>
+            Asset managers spend hours reviewing spreadsheets and static dashboards, yet still struggle to understand what is truly driving property performance. P&amp;L reports explain what happened — but rarely explain why it happened or what actions to take next.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="recommendation">
+      <div class="container">
+        <div class="section-heading">
+          <h2>From reporting to recommendation</h2>
+          <p>
+            Asset Signal transforms financial reporting into strategic insight across your portfolio.
+          </p>
+        </div>
+
+        <div class="split-grid">
+          <div class="feature-panel">
+            <h3>Financial intelligence in seconds</h3>
+            <p>
+              Upload property financials and instantly see where performance is moving and what is driving it.
+            </p>
+
+            <div class="feature-list">
+              <div class="feature-item">Revenue upside opportunities</div>
+              <div class="feature-item">Expense reduction opportunities</div>
+              <div class="feature-item">The line items driving NOI movement</div>
+            </div>
+          </div>
+
+          <div class="feature-panel">
+            <h3>Real-time market intelligence</h3>
+            <p>
+              Understand what is happening around every asset as local market conditions change.
+            </p>
+
+            <div class="feature-list">
+              <div class="feature-item">Competitor pricing and concessions</div>
+              <div class="feature-item">New developments and local market news</div>
+              <div class="feature-item">Signals impacting leasing performance</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="how-it-works">
+      <div class="container">
+        <div class="section-heading">
+          <h2>How It Works</h2>
+          <p>
+            Designed for real estate asset and portfolio management teams that need fast, market-aware answers.
+          </p>
+        </div>
+
+        <div class="steps-grid">
+          <div class="step-card">
+            <div class="step-number">01</div>
+            <h3>Upload property financials</h3>
+            <p>
+              Upload monthly P&amp;L reports for one asset or an entire portfolio.
+            </p>
+          </div>
+
+          <div class="step-card">
+            <div class="step-number">02</div>
+            <h3>Analyze performance drivers</h3>
+            <p>
+              Asset Signal identifies revenue opportunities, expense pressure, and performance variance instantly.
+            </p>
+          </div>
+
+          <div class="step-card">
+            <div class="step-number">03</div>
+            <h3>Act with market-aware strategy</h3>
+            <p>
+              Receive recommendations informed by real-time signals from each asset’s local market.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="cta-box">
+          <h2>Apply for the Asset Signal Pilot</h2>
+          <p>
+            We’re onboarding a limited number of pilot users. Apply to explore how Asset Signal can support your asset and portfolio management workflows.
+          </p>
+
+          <div class="cta-actions">
+            <button class="btn btn-primary" type="button" onclick="openPilotModal()">
+              Apply for the Pilot
+            </button>
+            <button class="btn btn-secondary" type="button" onclick="openUploadModal()">
+              Submit a Sample P&amp;L
+            </button>
+          </div>
+
+          <div class="cta-supporting">
+            Limited pilot for select real estate investment and asset management teams.
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Asset Signal © 2026
+  </footer>
+
+  <div id="pilotModal" class="modal-overlay">
+    <div class="modal-box">
+      <button class="modal-close" type="button" onclick="closePilotModal()">&times;</button>
+      <h3>Apply for the Pilot</h3>
+      <p class="modal-subtext">
+        Limited pilot for select real estate investment and asset management teams.
+      </p>
+
+      <form class="modal-form" action="https://formspree.io/f/YOUR_PILOT_FORM_ID" method="POST">
+        <input type="hidden" name="form_type" value="pilot_application" />
+        <input type="hidden" name="product" value="Asset Signal" />
+
+        <label for="pilot-name">Name</label>
+        <input id="pilot-name" type="text" name="name" required placeholder="Your name" />
+
+        <label for="pilot-email">Work email</label>
+        <input id="pilot-email" type="email" name="work_email" required placeholder="you@company.com" />
+
+        <label for="pilot-help">What do you want help with?</label>
+        <textarea id="pilot-help" name="help_with" required placeholder="Tell us about the asset management, portfolio, or market problems you want solved."></textarea>
+
+        <button class="btn btn-primary modal-submit" type="submit">Submit Application</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="uploadModal" class="modal-overlay">
+    <div class="modal-box">
+      <button class="modal-close" type="button" onclick="closeUploadModal()">&times;</button>
+      <h3>Submit a Sample P&amp;L</h3>
+      <p class="modal-subtext">
+        Share your information and we’ll follow up on sample P&amp;L submission.
+      </p>
+
+      <form class="modal-form" action="https://formspree.io/f/YOUR_UPLOAD_FORM_ID" method="POST">
+        <input type="hidden" name="form_type" value="sample_pl_submission" />
+        <input type="hidden" name="product" value="Asset Signal" />
+
+        <label for="upload-name">Name</label>
+        <input id="upload-name" type="text" name="name" required placeholder="Your name" />
+
+        <label for="upload-email">Work email</label>
+        <input id="upload-email" type="email" name="work_email" required placeholder="you@company.com" />
+
+        <label for="upload-help">What do you want help with?</label>
+        <textarea id="upload-help" name="help_with" required placeholder="Tell us what you want to analyze or improve."></textarea>
+
+        <button class="btn btn-primary modal-submit" type="submit">Continue</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function openPilotModal() {
+      document.getElementById("pilotModal").classList.add("active");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closePilotModal() {
+      document.getElementById("pilotModal").classList.remove("active");
+      document.body.style.overflow = "";
+    }
+
+    function openUploadModal() {
+      document.getElementById("uploadModal").classList.add("active");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeUploadModal() {
+      document.getElementById("uploadModal").classList.remove("active");
+      document.body.style.overflow = "";
+    }
+
+    window.addEventListener("click", function (e) {
+      const pilotModal = document.getElementById("pilotModal");
+      const uploadModal = document.getElementById("uploadModal");
+
+      if (e.target === pilotModal) closePilotModal();
+      if (e.target === uploadModal) closeUploadModal();
+    });
+  </script>
+</body>
+</html>
