@@ -1,76 +1,109 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AssetSignal | AI signals for real estate portfolios</title>
-  <meta
-    name="description"
-    content="AssetSignal helps real estate teams spot NOI risk earlier by connecting P&Ls, leasing signals, and market context."
-  />
+  <title>Asset Signal</title>
+  <meta name="description" content="AI-backed strategies for modern asset management." />
   <style>
-    * {
-      box-sizing: border-box;
+    :root {
+      --navy-950: #081124;
+      --navy-900: #0d1b3d;
+      --navy-800: #122454;
+      --navy-700: #18306f;
+      --navy-650: #1f3f80;
+      --blue-100: #e8f0ff;
+      --blue-200: #d7e3ff;
+      --text: #101c36;
+      --muted: #4d5d78;
+      --line: #d9e3f2;
+      --green: #15803d;
+      --green-bg: #effcf3;
+      --green-line: #bbf7d0;
+      --yellow: #a16207;
+      --yellow-bg: #fff9e8;
+      --yellow-line: #fde68a;
+      --red: #b91c1c;
+      --red-bg: #fff1f2;
+      --red-line: #fecdd3;
+      --max: 1200px;
     }
 
-    html {
-      scroll-behavior: smooth;
-    }
-
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
       margin: 0;
-      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background:
-        radial-gradient(circle at top left, rgba(90, 140, 255, 0.10), transparent 30%),
-        radial-gradient(circle at top right, rgba(0, 214, 143, 0.08), transparent 28%),
-        linear-gradient(180deg, #0b1020 0%, #0e1528 100%);
-      color: #f4f7fb;
-      line-height: 1.5;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(180deg, #f7faff 0%, #eef4fb 100%);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
     }
 
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    img {
-      max-width: 100%;
-      display: block;
-    }
-
-    button,
-    input,
-    textarea {
-      font: inherit;
-    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    button, input, textarea { font: inherit; }
 
     .container {
-      width: min(1120px, calc(100% - 40px));
+      width: min(var(--max), calc(100% - 88px));
       margin: 0 auto;
     }
 
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(18px) saturate(180%);
+      background: rgba(247, 250, 255, 0.84);
+      border-bottom: 1px solid rgba(214, 224, 242, 0.72);
+    }
+
     .nav {
+      height: 78px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 22px 0;
+      gap: 20px;
     }
 
     .brand {
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: 12px;
-      font-weight: 700;
-      font-size: 20px;
-      letter-spacing: 0.2px;
+      gap: 10px;
     }
 
-    .brand-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, #7dd3fc, #6ee7b7);
-      box-shadow: 0 0 24px rgba(125, 211, 252, 0.45);
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #fff;
+      border: 1px solid rgba(215, 226, 244, 0.9);
+      box-shadow: 0 10px 24px rgba(18, 36, 84, 0.08);
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+    }
+
+    .brand-mark img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .brand-text {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--navy-950);
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
     .btn {
@@ -78,308 +111,1124 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
-      padding: 13px 18px;
-      border-radius: 14px;
+      border-radius: 999px;
+      padding: 12px 18px;
+      font-size: 14px;
       font-weight: 600;
-      transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
-      border: 1px solid transparent;
-      white-space: nowrap;
+      border: 1px solid rgba(214, 224, 242, 0.95);
+      background: rgba(255,255,255,0.92);
+      color: var(--navy-900);
       cursor: pointer;
-      font-size: 15px;
+      transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+      white-space: nowrap;
+      box-shadow: 0 8px 18px rgba(18, 36, 84, 0.04);
     }
 
     .btn:hover {
       transform: translateY(-1px);
+      box-shadow: 0 14px 28px rgba(18, 36, 84, 0.10);
     }
 
     .btn-primary {
-      background: linear-gradient(135deg, #8ad8ff, #7cefc4);
-      color: #09111c;
-      box-shadow: 0 10px 30px rgba(125, 211, 252, 0.18);
-    }
-
-    .btn-secondary {
-      background: rgba(255, 255, 255, 0.03);
-      border-color: rgba(255, 255, 255, 0.08);
-      color: #f4f7fb;
+      background: linear-gradient(180deg, var(--navy-700) 0%, var(--navy-800) 100%);
+      color: #fff;
+      border-color: rgba(18, 36, 84, 0.75);
+      box-shadow: 0 14px 28px rgba(18, 36, 84, 0.18);
     }
 
     .hero {
-      padding: 44px 0 40px;
+      position: relative;
+      overflow: hidden;
+      padding: 56px 0 130px;
+      min-height: calc(100vh - 78px);
+      display: flex;
+      align-items: center;
+      background:
+        radial-gradient(circle at 14% 16%, rgba(70, 106, 184, 0.08) 0%, rgba(70, 106, 184, 0) 32%),
+        radial-gradient(circle at 84% 26%, rgba(96, 132, 212, 0.07) 0%, rgba(96, 132, 212, 0) 28%),
+        linear-gradient(180deg, #f9fbff 0%, #f2f7fd 58%, #edf4fb 100%);
+      border-bottom: 1px solid rgba(221, 229, 243, 0.9);
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(rgba(37, 69, 141, 0.055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(37, 69, 141, 0.055) 1px, transparent 1px);
+      background-size: 34px 34px;
+      opacity: 0.95;
+      animation: driftGrid 24s linear infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: -180px;
+      transform: translateX(-50%);
+      width: 1200px;
+      height: 360px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(82, 118, 200, 0.10) 0%, rgba(82, 118, 200, 0.03) 34%, rgba(82, 118, 200, 0) 70%);
+      filter: blur(8px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes driftGrid {
+      from { transform: translate3d(0, 0, 0); }
+      to { transform: translate3d(16px, 12px, 0); }
+    }
+
+    @keyframes heroFloatIn {
+      0% {
+        opacity: 0;
+        transform: translate3d(46px, 18px, 0) scale(0.985);
+      }
+      100% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) scale(1);
+      }
+    }
+
+    @keyframes softPulse {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-6px); }
+    }
+
+    @keyframes revealUp {
+      0% {
+        opacity: 0;
+        transform: translate3d(0, 36px, 0) scale(0.985);
+      }
+      100% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) scale(1);
+      }
+    }
+
+    @keyframes revealSoft {
+      0% {
+        opacity: 0;
+        transform: translate3d(0, 28px, 0) scale(0.99);
+      }
+      100% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) scale(1);
+      }
     }
 
     .hero-grid {
       display: grid;
-      grid-template-columns: 1.05fr 0.95fr;
-      gap: 40px;
+      grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+      gap: 62px;
       align-items: center;
+      width: 100%;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-copy-col {
+      padding-left: 54px;
+      transform: translateY(-40px);
     }
 
     .eyebrow {
       display: inline-flex;
       align-items: center;
       gap: 8px;
+      border: 1px solid rgba(214, 224, 242, 0.95);
+      background: rgba(255,255,255,0.82);
+      color: var(--navy-650);
       padding: 8px 12px;
       border-radius: 999px;
-      background: rgba(125, 211, 252, 0.08);
-      border: 1px solid rgba(125, 211, 252, 0.15);
-      color: #bfe9ff;
       font-size: 13px;
-      font-weight: 600;
-      margin-bottom: 20px;
+      font-weight: 700;
+      box-shadow: 0 8px 20px rgba(18, 36, 84, 0.04);
+    }
+
+    .eyebrow-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--navy-650);
+      box-shadow: 0 0 0 5px rgba(31, 63, 128, 0.10);
     }
 
     h1 {
-      margin: 0 0 18px;
-      font-size: clamp(42px, 7vw, 72px);
-      line-height: 0.98;
-      letter-spacing: -0.03em;
-      max-width: 700px;
+      margin: 18px 0 16px;
+      font-size: clamp(46px, 5.2vw, 66px);
+      line-height: 1.02;
+      letter-spacing: -0.055em;
+      max-width: 13.8ch;
+      color: var(--navy-950);
     }
 
-    .hero p {
-      margin: 0;
-      max-width: 620px;
-      font-size: clamp(18px, 2.4vw, 21px);
-      color: #c6d1e3;
+    .hero-copy {
+      font-size: 18px;
+      line-height: 1.62;
+      color: #43506a;
+      max-width: 31ch;
     }
+
+    .hero-copy strong { color: var(--navy-900); }
 
     .hero-actions {
       display: flex;
       flex-wrap: wrap;
-      gap: 14px;
+      gap: 12px;
       margin-top: 28px;
     }
 
-    .hero-note {
-      margin-top: 16px;
-      color: #91a4c4;
-      font-size: 14px;
+    .hero-meta {
+      display: block;
+      margin-top: 20px;
+      color: #20365f;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      max-width: 620px;
     }
 
-    .dashboard-glow {
+    .hero-visual-wrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
       position: relative;
+      isolation: isolate;
     }
 
-    .dashboard-glow::before {
+    .hero-visual-wrap::before {
       content: "";
       position: absolute;
-      inset: -14px;
-      border-radius: 34px;
+      inset: 42px 20px 18px 20px;
+      border-radius: 38px;
       background:
-        radial-gradient(circle at top left, rgba(125, 211, 252, 0.20), transparent 35%),
-        radial-gradient(circle at bottom right, rgba(110, 231, 183, 0.14), transparent 30%);
-      filter: blur(18px);
+        radial-gradient(circle at 50% 80%, rgba(82, 118, 200, 0.12) 0%, rgba(82, 118, 200, 0.04) 24%, rgba(82, 118, 200, 0) 54%),
+        linear-gradient(180deg, rgba(15, 34, 75, 0.05) 0%, rgba(15, 34, 75, 0.015) 72%, rgba(15, 34, 75, 0) 100%);
+      filter: blur(4px);
       z-index: 0;
       pointer-events: none;
     }
 
-    .dashboard-shell {
-      position: relative;
-      z-index: 1;
-      border-radius: 24px;
-      padding: 14px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
-      border: 1px solid rgba(255, 255, 255, 0.10);
-      box-shadow:
-        0 20px 60px rgba(0, 0, 0, 0.35),
-        0 0 0 1px rgba(255,255,255,0.03) inset;
-    }
-
-    .dashboard-topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 12px;
-      padding: 0 6px;
-    }
-
-    .dots {
-      display: flex;
-      gap: 8px;
-    }
-
-    .dots span {
-      width: 10px;
-      height: 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.22);
-    }
-
-    .slider-label {
-      font-size: 12px;
-      color: #8fa3c4;
-      letter-spacing: 0.02em;
-    }
-
-    .dashboard-frame {
-      position: relative;
-      overflow: hidden;
-      border-radius: 18px;
-      background: #11192f;
-      border: 1px solid rgba(255,255,255,0.08);
-      aspect-ratio: 16 / 10;
-    }
-
-    .slide {
+    .hero-building {
       position: absolute;
-      inset: 0;
-      opacity: 0;
-      transition: opacity 0.7s ease;
+      right: 18px;
+      bottom: 18px;
+      width: 198px;
+      height: 304px;
+      border-radius: 8px 8px 0 0;
+      background:
+        linear-gradient(180deg, rgba(12, 31, 70, 0.05) 0%, rgba(12, 31, 70, 0.10) 100%),
+        linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px),
+        linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px);
+      background-size: auto, 22px 22px, 22px 22px;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
+      opacity: 0.10;
+      z-index: 0;
       pointer-events: none;
     }
 
-    .slide.active {
-      opacity: 1;
-      pointer-events: auto;
+    .hero-building::before,
+    .hero-building::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      border-radius: 8px 8px 0 0;
+      background:
+        linear-gradient(180deg, rgba(18, 42, 91, 0.05) 0%, rgba(18, 42, 91, 0.10) 100%),
+        linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px),
+        linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: auto, 20px 20px, 20px 20px;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
     }
 
-    .slide img {
+    .hero-building::before {
+      left: -74px;
+      width: 76px;
+      height: 232px;
+      opacity: 0.66;
+    }
+
+    .hero-building::after {
+      right: -58px;
+      width: 60px;
+      height: 270px;
+      opacity: 0.58;
+    }
+
+    .hero-visual {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center top;
+      max-width: 560px;
+      background:
+        radial-gradient(circle at 18% 18%, rgba(94, 134, 219, 0.06) 0%, rgba(94, 134, 219, 0.015) 18%, rgba(94, 134, 219, 0) 34%),
+        radial-gradient(circle at 80% 76%, rgba(87, 125, 212, 0.045) 0%, rgba(87, 125, 212, 0) 24%),
+        radial-gradient(circle at 50% 86%, rgba(78, 117, 206, 0.08) 0%, rgba(78, 117, 206, 0.022) 18%, rgba(78, 117, 206, 0) 42%),
+        linear-gradient(145deg, rgba(9,19,39,0.74) 0%, rgba(16,36,81,0.70) 42%, rgba(19,42,93,0.67) 72%, rgba(13,27,61,0.72) 100%);
+      border: 1px solid rgba(111, 140, 199, 0.12);
+      border-radius: 26px;
+      box-shadow: 0 26px 54px rgba(9, 20, 46, 0.14);
+      padding: 12px;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+      backdrop-filter: blur(8px);
+      opacity: 0;
+      transform: translate3d(46px, 18px, 0) scale(0.985);
+      animation: heroFloatIn 0.95s cubic-bezier(0.22, 1, 0.36, 1) 0.10s forwards, softPulse 7.2s ease-in-out 1.3s infinite;
+      will-change: transform, opacity;
     }
 
-    .slider-controls {
+    .hero-visual::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+      background-size: 26px 26px;
+      opacity: 0.24;
+      pointer-events: none;
+    }
+
+    .hero-visual::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 50% 34%, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 32%),
+        linear-gradient(180deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0) 28%);
+      pointer-events: none;
+    }
+
+    .browser-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 14px;
-      margin-top: 14px;
-      padding: 0 4px;
-    }
-
-    .slider-dots {
-      display: flex;
       gap: 8px;
-      align-items: center;
+      padding: 4px 4px 10px;
+      position: relative;
+      z-index: 1;
     }
 
-    .slider-dot {
+    .browser-left {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .browser-dot {
       width: 8px;
       height: 8px;
+      border-radius: 50%;
+      background: rgba(220, 232, 255, 0.55);
+    }
+
+    .browser-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
       border-radius: 999px;
-      background: rgba(255,255,255,0.22);
-      transition: all 0.25s ease;
+      border: 1px solid rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.035);
+      color: #d9e7ff;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      backdrop-filter: blur(10px);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+    }
+
+    .browser-badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #6ee7b7;
+      box-shadow: 0 0 12px rgba(110, 231, 183, 0.55);
+    }
+
+    .mock-frame {
+      background: linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(247,250,255,0.92) 100%);
+      border: 1px solid rgba(205, 220, 246, 0.90);
+      border-radius: 22px;
+      overflow: hidden;
+      position: relative;
+      z-index: 1;
+      box-shadow: 0 18px 34px rgba(8, 18, 42, 0.14), inset 0 1px 0 rgba(255,255,255,0.35);
+    }
+
+    .mock-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(207, 220, 242, 0.9);
+      background: linear-gradient(180deg, rgba(255,255,255,0.94) 0%, rgba(240,246,255,0.90) 100%);
+    }
+
+    .mock-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .mock-pill {
+      padding: 5px 9px;
+      border: 1px solid rgba(211, 223, 244, 0.95);
+      border-radius: 999px;
+      font-size: 10px;
+      color: #4f5f79;
+      background: rgba(255,255,255,0.88);
+      font-weight: 700;
+      transition: 0.22s ease;
       cursor: pointer;
     }
 
-    .slider-dot.active {
-      width: 24px;
-      background: linear-gradient(135deg, #8ad8ff, #7cefc4);
+    .mock-pill.active {
+      background: linear-gradient(180deg, #18306f 0%, #122454 100%);
+      color: #f4f8ff;
+      border-color: rgba(27, 53, 116, 0.95);
+      box-shadow: 0 8px 16px rgba(18, 36, 84, 0.12);
     }
 
-    .slider-buttons {
-      display: flex;
-      gap: 8px;
-    }
-
-    .slider-btn {
-      width: 36px;
-      height: 36px;
+    .mock-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 9px;
       border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.10);
-      background: rgba(255,255,255,0.04);
-      color: #dbe7f6;
+      background: rgba(237, 244, 255, 0.88);
+      border: 1px solid rgba(208, 221, 245, 0.92);
+      color: #27427a;
+      font-size: 10px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .mock-status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #3b82f6;
+      box-shadow: 0 0 10px rgba(59, 130, 246, 0.45);
+    }
+
+    .mock-view { display: none; }
+    .mock-view.active { display: block; }
+
+    .portfolio-card {
+      padding: 12px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .preview-strip {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .preview-panel,
+    .signal-preview,
+    .market-panel,
+    .market-side,
+    .signal-rec-item,
+    .promo-item,
+    .alert-item,
+    .rate-card,
+    .metric-card,
+    .portfolio-shell {
+      box-shadow: 0 12px 28px rgba(18, 36, 84, 0.06);
+    }
+
+    .preview-panel {
+      border: 1px solid rgba(209, 221, 242, 0.92);
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(248,251,255,0.96) 100%);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .preview-panel::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0) 20%);
+      pointer-events: none;
+    }
+
+    .preview-panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 10px 11px;
+      border-bottom: 1px solid rgba(216, 228, 247, 0.9);
+      background: linear-gradient(180deg, #fbfdff 0%, #f5f9ff 100%);
+    }
+
+    .preview-panel-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--navy-900);
+      letter-spacing: -0.01em;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      padding: 10px;
+    }
+
+    .metric-card {
+      border: 1px solid rgba(215, 227, 246, 0.9);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.94);
+      padding: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .metric-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, rgba(76, 120, 215, 0.08) 0%, rgba(76, 120, 215, 0) 38%);
+      pointer-events: none;
+    }
+
+    .metric-label {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #61718b;
+      margin-bottom: 4px;
+    }
+
+    .metric-value {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--navy-950);
+      margin-bottom: 4px;
+    }
+
+    .metric-delta {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--green);
+    }
+
+    .chart-card { padding: 10px; }
+
+    .mini-chart {
+      height: 98px;
+      border: 1px solid rgba(215, 227, 246, 0.9);
+      border-radius: 14px;
+      background:
+        linear-gradient(180deg, rgba(243,248,255,0.95) 0%, rgba(255,255,255,0.98) 100%),
+        linear-gradient(90deg, rgba(216, 228, 247, 0.55) 1px, transparent 1px),
+        linear-gradient(rgba(216, 228, 247, 0.55) 1px, transparent 1px);
+      background-size: auto, 28px 28px, 28px 28px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mini-chart svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .portfolio-shell {
+      border: 1px solid rgba(210, 223, 244, 0.92);
+      border-radius: 18px;
+      overflow: hidden;
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+      position: relative;
+    }
+
+    .portfolio-shell::after {
+      content: "";
+      position: absolute;
+      top: 44px;
+      right: 0;
+      width: 34px;
+      height: calc(100% - 44px);
+      pointer-events: none;
+      background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.94) 100%);
+    }
+
+    .portfolio-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 9px 10px;
+      background: linear-gradient(180deg, #fbfdff 0%, #f4f8ff 100%);
+      border-bottom: 1px solid rgba(216, 228, 247, 0.9);
+    }
+
+    .portfolio-toolbar .left,
+    .portfolio-toolbar .right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tiny-chip {
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.94);
+      border: 1px solid rgba(214, 226, 246, 0.9);
+      font-size: 9px;
+      color: #4c5c77;
+      font-weight: 700;
+    }
+
+    .portfolio-table-wrap {
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      touch-action: pan-x;
+      cursor: grab;
+      background: #fff;
+      scrollbar-width: thin;
+      scrollbar-color: #8ea7d8 #eef3fb;
+    }
+
+    .portfolio-table-wrap:active { cursor: grabbing; }
+    .portfolio-table-wrap::-webkit-scrollbar { height: 10px; }
+    .portfolio-table-wrap::-webkit-scrollbar-track {
+      background: #eef3fb;
+      border-radius: 999px;
+    }
+    .portfolio-table-wrap::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #2b4f97 0%, #18306f 100%);
+      border-radius: 999px;
+    }
+
+    table {
+      width: 100%;
+      min-width: 660px;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 9px 10px;
+      border-bottom: 1px solid #edf2fa;
+      font-size: 11px;
+    }
+
+    th {
+      font-size: 9.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #556682;
+      background: #fbfdff;
+      font-weight: 700;
+    }
+
+    td {
+      color: var(--navy-950);
+      font-weight: 500;
+    }
+
+    .property-name {
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--navy-900);
+    }
+
+    .subtle {
+      color: #556682;
+      font-weight: 500;
+    }
+
+    .trend-up { color: var(--green); font-weight: 700; }
+    .trend-down { color: var(--red); font-weight: 700; }
+
+    .attention-low,
+    .attention-medium,
+    .attention-high {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      cursor: pointer;
-      transition: background 0.2s ease, transform 0.2s ease;
+      min-width: 62px;
+      border-radius: 999px;
+      padding: 4px 8px;
+      font-size: 10px;
+      font-weight: 700;
+      border: 1px solid;
     }
 
-    .slider-btn:hover {
-      background: rgba(255,255,255,0.09);
-      transform: translateY(-1px);
+    .attention-low {
+      color: var(--green);
+      background: var(--green-bg);
+      border-color: var(--green-line);
+    }
+    .attention-medium {
+      color: var(--yellow);
+      background: var(--yellow-bg);
+      border-color: var(--yellow-line);
+    }
+    .attention-high {
+      color: var(--red);
+      background: var(--red-bg);
+      border-color: var(--red-line);
     }
 
-    .section {
-      padding: 32px 0;
+    .signal-preview {
+      border: 1px solid rgba(210, 223, 244, 0.9);
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(245,249,255,0.96) 100%);
+      padding: 10px;
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      max-width: 100%;
     }
 
-    .value-grid {
+    .signal-preview::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 22%);
+      pointer-events: none;
+    }
+
+    .signal-preview-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .signal-preview-title {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--navy-900);
+    }
+
+    .signal-preview-tag {
+      padding: 5px 8px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 700;
+      background: var(--blue-100);
+      border: 1px solid var(--blue-200);
+      color: var(--navy-800);
+    }
+
+    .signal-rec {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
+      gap: 8px;
     }
 
-    .card {
-      padding: 22px;
-      border-radius: 22px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.07);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.16);
+    .signal-rec-item {
+      border: 1px solid rgba(217, 227, 244, 0.9);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.95);
+      padding: 9px 10px;
+      position: relative;
+      overflow: hidden;
     }
 
-    .card h3 {
-      margin: 0 0 10px;
-      font-size: 20px;
+    .signal-rec-item::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, rgba(76, 120, 215, 0.05) 0%, rgba(76, 120, 215, 0) 36%);
+      pointer-events: none;
     }
 
-    .card p {
-      margin: 0;
-      color: #b8c6da;
-      font-size: 15px;
+    .signal-rec-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 5px;
     }
 
-    .cta-box {
-      padding: 28px;
-      border-radius: 28px;
+    .signal-rec-name {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--navy-900);
+    }
+
+    .signal-rec-priority {
+      font-size: 10px;
+      font-weight: 700;
+      border-radius: 999px;
+      padding: 4px 7px;
+      color: var(--red);
+      background: var(--red-bg);
+      border: 1px solid var(--red-line);
+    }
+
+    .signal-rec-copy {
+      font-size: 10px;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+
+    .market-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 10px;
+    }
+
+    .market-panel,
+    .market-side {
+      border: 1px solid rgba(217, 227, 244, 0.9);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.96);
+      padding: 10px;
+    }
+
+    .market-panel-title,
+    .market-side-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--navy-900);
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .promo-list,
+    .market-alerts {
+      display: grid;
+      gap: 8px;
+    }
+
+    .promo-item,
+    .alert-item {
+      border: 1px solid rgba(220, 229, 244, 0.9);
+      border-radius: 12px;
+      padding: 9px 10px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(251,253,255,0.96) 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .promo-item::after,
+    .alert-item::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, rgba(76, 120, 215, 0.05) 0%, rgba(76, 120, 215, 0) 36%);
+      pointer-events: none;
+    }
+
+    .promo-top,
+    .alert-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 4px;
+    }
+
+    .promo-name,
+    .alert-name {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--navy-900);
+    }
+
+    .promo-badge,
+    .alert-badge {
+      font-size: 10px;
+      font-weight: 700;
+      border-radius: 999px;
+      padding: 4px 7px;
+      background: var(--yellow-bg);
+      border: 1px solid var(--yellow-line);
+      color: var(--yellow);
+    }
+
+    .promo-copy,
+    .alert-copy {
+      font-size: 10.5px;
+      line-height: 1.45;
+      color: var(--muted);
+    }
+
+    .rate-card {
+      border: 1px solid rgba(217, 227, 244, 0.9);
+      border-radius: 12px;
+      padding: 10px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(248,251,255,0.96) 100%);
+      margin-bottom: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .rate-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, rgba(76, 120, 215, 0.05) 0%, rgba(76, 120, 215, 0) 34%);
+      pointer-events: none;
+    }
+
+    .rate-label {
+      font-size: 10px;
+      color: var(--muted);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .rate-value {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--navy-950);
+      letter-spacing: -0.03em;
+    }
+
+    .rate-delta {
+      font-size: 10px;
+      color: var(--green);
+      font-weight: 700;
+    }
+
+    .section-dark {
+      position: relative;
+      padding: 92px 0 84px;
       background:
-        linear-gradient(135deg, rgba(125,211,252,0.08), rgba(110,231,183,0.06)),
-        rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.09);
+        radial-gradient(circle at 18% 10%, rgba(88, 124, 210, 0.12) 0%, rgba(88, 124, 210, 0) 30%),
+        linear-gradient(180deg, #11224b 0%, #0d1b3d 100%);
+      color: #e7eefb;
+      overflow: hidden;
+    }
+
+    .section-dark::before {
+      content: "";
+      position: absolute;
+      inset: -120px 0 auto 0;
+      height: 220px;
+      background: radial-gradient(circle at 50% 0%, rgba(245, 248, 255, 0.42) 0%, rgba(245, 248, 255, 0.10) 28%, rgba(245, 248, 255, 0) 72%);
+      pointer-events: none;
+      opacity: 0.28;
+    }
+
+    .section-dark::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 30px 30px;
+      pointer-events: none;
+      opacity: 0.62;
+    }
+
+    .section-dark .container,
+    .section-light .container {
+      position: relative;
+      z-index: 1;
+    }
+
+    .section-header {
+      display: block;
+      margin: 0 auto 56px;
+      text-align: center;
+      max-width: 980px;
+    }
+
+    .section-kicker {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #a9bce2;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(30px, 3.2vw, 44px);
+      letter-spacing: -0.045em;
+      line-height: 1.04;
+      color: #f4f8ff;
+    }
+
+    .section-subcopy {
+      color: #c3d2ee;
+      font-size: 17px;
+      line-height: 1.65;
+      max-width: 760px;
+      margin: 14px auto 0;
+    }
+
+    .signals-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 32px;
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    .signal-card {
+      background: rgba(255,255,255,0.97);
+      border: 1px solid rgba(211, 223, 244, 0.88);
+      border-radius: 24px;
+      padding: 30px;
+      box-shadow: 0 22px 44px rgba(8, 18, 42, 0.18);
+      opacity: 0;
+      transform: translate3d(0, 36px, 0) scale(0.985);
+      will-change: transform, opacity;
+      transition: box-shadow 0.28s ease, border-color 0.28s ease;
+    }
+
+    .signal-card.is-visible {
+      animation: revealUp 0.78s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    .signal-card.is-visible:nth-child(2) {
+      animation-delay: 0.12s;
+    }
+
+    .signal-card:hover {
+      box-shadow: 0 28px 52px rgba(8, 18, 42, 0.22);
+      border-color: rgba(187, 204, 235, 0.96);
+    }
+
+    .signal-card h3 {
+      margin: 0 0 12px;
+      font-size: 22px;
+      letter-spacing: -0.04em;
+      color: var(--navy-900);
+    }
+
+    .signal-list {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      display: grid;
+      gap: 10px;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .signal-list li::marker { color: var(--navy-650); }
+
+    .signal-meta {
+      display: inline-flex;
+      margin-bottom: 14px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      background: var(--blue-100);
+      border: 1px solid var(--blue-200);
+      color: var(--navy-800);
+    }
+
+    .section-light {
+      position: relative;
+      padding: 74px 0 88px;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(81, 117, 198, 0.06) 0%, rgba(81, 117, 198, 0) 34%),
+        linear-gradient(180deg, #f9fbff 0%, #eff5fc 100%);
+      border-top: 1px solid rgba(225, 232, 245, 0.88);
+    }
+
+    .cta-band {
+      border: 1px solid rgba(214, 224, 242, 0.88);
+      border-radius: 26px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.86) 0%, rgba(248,251,255,0.92) 100%);
+      box-shadow: 0 22px 42px rgba(8, 18, 42, 0.10);
+      padding: 30px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 18px;
       flex-wrap: wrap;
-      margin-top: 8px;
+      backdrop-filter: blur(10px);
+      opacity: 0;
+      transform: translate3d(0, 28px, 0) scale(0.99);
+      will-change: transform, opacity;
+      transition: box-shadow 0.28s ease, border-color 0.28s ease;
     }
 
-    .cta-box h2 {
-      margin: 0 0 8px;
-      font-size: clamp(28px, 4vw, 38px);
-      line-height: 1.05;
+    .cta-band.is-visible {
+      animation: revealSoft 0.72s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     }
 
-    .cta-box p {
-      margin: 0;
-      color: #bcc7da;
-      max-width: 650px;
+    .cta-band:hover {
+      box-shadow: 0 28px 52px rgba(8, 18, 42, 0.14);
+      border-color: rgba(187, 204, 235, 0.96);
     }
 
-    .footer {
-      padding: 28px 0 42px;
-      color: #8798b6;
+    .cta-band-copy { max-width: 720px; }
+
+    .cta-band-title {
+      font-size: 21px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin-bottom: 8px;
+      color: var(--navy-950);
+    }
+
+    .cta-band-text {
+      color: var(--muted);
       font-size: 14px;
+      line-height: 1.55;
+      max-width: 620px;
     }
 
-    .modal-overlay {
+    .site-footer {
+      padding: 30px 0 58px;
+      color: rgba(226, 235, 249, 0.82);
+      font-size: 14px;
+      background: linear-gradient(180deg, #091226 0%, #0d1b3d 100%);
+    }
+
+    .footer-inner {
+      border-top: 1px solid rgba(196, 210, 236, 0.16);
+      padding-top: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .modal {
       position: fixed;
       inset: 0;
-      background: rgba(4, 8, 18, 0.72);
-      backdrop-filter: blur(8px);
+      background: rgba(10, 21, 48, 0.42);
       display: none;
       align-items: center;
       justify-content: center;
       padding: 20px;
-      z-index: 50;
+      z-index: 80;
     }
 
-    .modal-overlay.show {
-      display: flex;
-    }
+    .modal.open { display: flex; }
 
-    .modal {
-      width: min(520px, 100%);
-      background: linear-gradient(180deg, rgba(22,29,51,0.98), rgba(14,20,40,0.98));
-      border: 1px solid rgba(255,255,255,0.09);
+    .modal-card {
+      width: min(100%, 560px);
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
       border-radius: 24px;
+      border: 1px solid var(--line);
+      box-shadow: 0 30px 80px rgba(18, 36, 84, 0.22);
       padding: 24px;
-      box-shadow: 0 24px 80px rgba(0,0,0,0.45);
       position: relative;
     }
 
@@ -387,187 +1236,305 @@
       position: absolute;
       top: 14px;
       right: 14px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.08);
-      color: #dbe7f6;
-      width: 36px;
-      height: 36px;
+      width: 38px;
+      height: 38px;
+      border: 1px solid var(--line);
       border-radius: 999px;
+      background: #fff;
       cursor: pointer;
-      font-size: 18px;
+      font-size: 22px;
       line-height: 1;
+      color: var(--muted);
     }
 
-    .modal h3 {
-      margin: 0 0 10px;
+    .modal-card h3 {
+      margin: 0 0 8px;
       font-size: 28px;
-      line-height: 1.05;
+      letter-spacing: -0.05em;
+      color: var(--navy-950);
+      max-width: 12ch;
     }
 
-    .modal p {
+    .modal-card p {
       margin: 0 0 18px;
-      color: #bcc7da;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.65;
+      max-width: 42ch;
     }
 
-    .modal form {
-      display: grid;
-      gap: 12px;
+    .lead-form { display: grid; gap: 12px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .field { display: grid; gap: 7px; }
+    .field.full { grid-column: 1 / -1; }
+
+    label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--navy-700);
+      letter-spacing: 0.01em;
     }
 
-    .modal input,
-    .modal textarea {
+    input, textarea {
       width: 100%;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(255,255,255,0.04);
-      color: #f4f7fb;
+      border: 1px solid var(--line);
       border-radius: 14px;
-      padding: 14px 15px;
+      background: #fff;
+      padding: 13px 14px;
+      color: var(--navy-950);
       outline: none;
     }
 
-    .modal input::placeholder,
-    .modal textarea::placeholder {
-      color: #8193b1;
-    }
+    textarea { min-height: 116px; resize: vertical; }
 
-    .modal textarea {
-      min-height: 96px;
-      resize: vertical;
-    }
-
-    .fine-print {
+    .form-note {
+      color: #7a8aa6;
       font-size: 12px;
-      color: #8da0be;
+      line-height: 1.55;
+    }
+
+    .form-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+
+    .form-success {
+      display: none;
+      border: 1px solid var(--blue-200);
+      background: linear-gradient(180deg, #f8fbff 0%, #eef4ff 100%);
+      border-radius: 18px;
+      padding: 18px;
       margin-top: 8px;
     }
 
-    .status-message {
-      min-height: 20px;
-      margin-top: 8px;
+    .form-success.show { display: block; }
+
+    .form-success-title {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--navy-950);
+      margin-bottom: 6px;
+    }
+
+    .form-success-copy {
+      color: var(--muted);
       font-size: 14px;
-      color: #bfe9ff;
+      line-height: 1.6;
     }
 
-    @media (max-width: 980px) {
-      .hero-grid,
-      .value-grid {
-        grid-template-columns: 1fr;
-      }
+    .submit-btn.loading { opacity: 0.75; pointer-events: none; }
 
-      .dashboard-frame {
-        aspect-ratio: 16 / 9;
+    @media (max-width: 1060px) {
+      .container { width: min(var(--max), calc(100% - 40px)); }
+      .hero-grid { grid-template-columns: 1fr; gap: 28px; }
+      .hero-copy-col {
+        padding-left: 0;
+        transform: none;
       }
+      .signals-grid { grid-template-columns: 1fr; gap: 24px; }
+      .hero { min-height: auto; padding: 40px 0 58px; }
+      .hero-visual-wrap { padding-top: 0; }
+      .hero-building { display: none; }
+      .hero::after { display: none; }
     }
 
     @media (max-width: 720px) {
-      .container {
-        width: min(100% - 24px, 1120px);
-      }
-
-      .nav {
-        padding: 16px 0;
-      }
-
-      .hero {
-        padding-top: 24px;
-      }
-
-      .hero-actions {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .btn {
-        width: 100%;
-      }
-
-      .card,
-      .cta-box,
-      .modal {
-        padding: 20px;
-      }
-
-      .section {
-        padding: 24px 0;
-      }
-
-      .slider-controls {
-        flex-wrap: wrap;
-      }
+      .container { width: min(var(--max), calc(100% - 28px)); }
+      .nav { height: auto; padding: 14px 0; align-items: flex-start; }
+      .nav, .nav-actions, .hero-actions, .form-actions { flex-wrap: wrap; }
+      .form-grid { grid-template-columns: 1fr; }
+      .btn { width: 100%; }
+      h1 { font-size: clamp(38px, 10vw, 54px); }
+      .hero-copy { font-size: 17px; }
+      .hero-meta, .browser-badge, .mock-status { display: none; }
+      .hero-visual { max-width: 100%; }
+      .portfolio-table-wrap table { min-width: 560px; }
+      .market-grid { grid-template-columns: 1fr; }
+      .hero::before, .hero::after, .hero-building { display: none; }
+      .section-dark { padding: 68px 0 64px; }
+      .section-light { padding: 56px 0 64px; }
+      .signal-card, .cta-band { padding: 24px; }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <nav class="nav">
-      <div class="brand">
-        <span class="brand-dot"></span>
-        <span>AssetSignal</span>
+  <header class="site-header">
+    <div class="container nav">
+      <a href="#top" class="brand" aria-label="Asset Signal Home">
+        <span class="brand-mark"><img src="images/logo.png" alt="Asset Signal logo icon" /></span>
+        <span class="brand-text">Asset Signal</span>
+      </a>
+      <div class="nav-actions">
+        <button class="btn open-modal" type="button">View demo</button>
+        <button class="btn btn-primary open-modal" type="button">Apply to pilot</button>
       </div>
-      <button class="btn btn-primary cta-trigger" type="button" data-source="Join Pilot">
-        Join Pilot
-      </button>
-    </nav>
+    </div>
+  </header>
 
+  <main id="top">
     <section class="hero">
-      <div class="hero-grid">
-        <div>
-          <div class="eyebrow">AI for real estate asset management</div>
-          <h1>Know where NOI risk is forming before it hits your P&amp;L.</h1>
-          <p>
-            AssetSignal connects property financials, leasing momentum, and market context
-            into one clear decision layer for modern real estate teams.
-          </p>
-
+      <div class="container hero-grid">
+        <div class="hero-copy-col">
+          <div class="eyebrow"><span class="eyebrow-dot"></span>For modern asset and portfolio teams</div>
+          <h1>AI-backed strategies,<br>Built for real estate.</h1>
+          <p class="hero-copy">Turn property data into clearer priorities, more consistent recommendations, and better profit decisions across the portfolio.</p>
           <div class="hero-actions">
-            <button class="btn btn-primary cta-trigger" type="button" data-source="Upload a P&L">
-              Upload a P&amp;L
-            </button>
-            <button class="btn btn-secondary cta-trigger" type="button" data-source="Run Portfolio Analysis">
-              Run Portfolio Analysis
-            </button>
+            <button class="btn open-modal" type="button">Apply to pilot</button>
+            <button class="btn btn-primary open-modal" type="button">Upload P&amp;L</button>
           </div>
-
-          <div class="hero-note">
-            Currently onboarding a limited number of early pilot users.
-          </div>
+          <div class="hero-meta">Designed to help teams act faster, stay consistent, and protect portfolio performance.</div>
         </div>
 
-        <div class="dashboard-glow">
-          <div class="dashboard-shell">
-            <div class="dashboard-topbar">
-              <div class="dots">
-                <span></span><span></span><span></span>
+        <div class="hero-visual-wrap">
+          <div class="hero-building" aria-hidden="true"></div>
+          <div class="hero-visual">
+            <div class="browser-bar">
+              <div class="browser-left">
+                <span class="browser-dot"></span>
+                <span class="browser-dot"></span>
+                <span class="browser-dot"></span>
               </div>
-              <div class="slider-label">Product Preview</div>
+              <div class="browser-badge"><span class="browser-badge-dot"></span>Live AI layer</div>
             </div>
 
-            <div class="dashboard-frame" id="screenshotSlider">
-              <div class="slide active">
-                <img src="images/screenshot1.png" alt="AssetSignal product screenshot 1" />
-              </div>
-              <div class="slide">
-                <img src="images/screenshot2.png" alt="AssetSignal product screenshot 2" />
-              </div>
-              <div class="slide">
-                <img src="images/screenshot3.png" alt="AssetSignal product screenshot 3" />
-              </div>
-              <div class="slide">
-                <img src="images/screenshot4.png" alt="AssetSignal product screenshot 4" />
-              </div>
-            </div>
-
-            <div class="slider-controls">
-              <div class="slider-dots" id="sliderDots">
-                <button class="slider-dot active" type="button" aria-label="Go to slide 1"></button>
-                <button class="slider-dot" type="button" aria-label="Go to slide 2"></button>
-                <button class="slider-dot" type="button" aria-label="Go to slide 3"></button>
-                <button class="slider-dot" type="button" aria-label="Go to slide 4"></button>
+            <div class="mock-frame">
+              <div class="mock-topbar">
+                <div class="mock-pills">
+                  <span class="mock-pill active" data-view="portfolio">Portfolio</span>
+                  <span class="mock-pill" data-view="signals">Signals</span>
+                  <span class="mock-pill" data-view="market">Market</span>
+                </div>
+                <div class="mock-status"><span class="mock-status-dot"></span>Updated 2m ago</div>
               </div>
 
-              <div class="slider-buttons">
-                <button class="slider-btn" id="prevSlide" type="button" aria-label="Previous slide">‹</button>
-                <button class="slider-btn" id="nextSlide" type="button" aria-label="Next slide">›</button>
+              <div class="portfolio-card">
+                <div class="mock-view active" data-view-panel="portfolio">
+                  <div class="portfolio-shell">
+                    <div class="portfolio-toolbar">
+                      <div class="left"><span class="tiny-chip">Mar 2026</span><span class="tiny-chip">7 assets</span></div>
+                      <div class="right"><span class="tiny-chip">Occupancy</span><span class="tiny-chip">NOI</span></div>
+                    </div>
+                    <div class="portfolio-table-wrap">
+                      <table aria-label="Mock portfolio dashboard">
+                        <thead>
+                          <tr>
+                            <th>Property</th>
+                            <th>Attention</th>
+                            <th>Revenue</th>
+                            <th>NOI</th>
+                            <th>Occ.</th>
+                            <th>MoM NOI</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr><td><span class="property-name">Westbridge Commons</span><br><span class="subtle">Dallas, TX</span></td><td><span class="attention-low">Low</span></td><td>$1.24M</td><td>$512K</td><td>95.1%</td><td class="trend-up">+4.8%</td></tr>
+                          <tr><td><span class="property-name">Riverton Place</span><br><span class="subtle">Charlotte, NC</span></td><td><span class="attention-medium">Medium</span></td><td>$986K</td><td>$391K</td><td>92.4%</td><td class="trend-down">-2.6%</td></tr>
+                          <tr><td><span class="property-name">Harbor Point Living</span><br><span class="subtle">Tampa, FL</span></td><td><span class="attention-high">High</span></td><td>$1.08M</td><td>$428K</td><td>89.7%</td><td class="trend-down">-6.1%</td></tr>
+                          <tr><td><span class="property-name">Maple Row Residences</span><br><span class="subtle">Phoenix, AZ</span></td><td><span class="attention-low">Low</span></td><td>$1.16M</td><td>$471K</td><td>94.2%</td><td class="trend-up">+3.1%</td></tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <div class="preview-strip">
+                    <div class="preview-panel">
+                      <div class="preview-panel-head">
+                        <div class="preview-panel-title">Property performance</div>
+                        <span class="tiny-chip">Latest analysis</span>
+                      </div>
+                      <div class="metric-grid">
+                        <div class="metric-card">
+                          <div class="metric-label">YTD NOI</div>
+                          <div class="metric-value">$1.80M</div>
+                          <div class="metric-delta">+3.2% vs budget</div>
+                        </div>
+                        <div class="metric-card">
+                          <div class="metric-label">Beds leased</div>
+                          <div class="metric-value">92.4%</div>
+                          <div class="metric-delta">+1.1 pts WoW</div>
+                        </div>
+                      </div>
+                      <div class="chart-card">
+                        <div class="mini-chart">
+                          <svg viewBox="0 0 300 120" preserveAspectRatio="none" aria-hidden="true">
+                            <polyline fill="none" stroke="#b8caeb" stroke-width="2" points="0,80 40,74 80,78 120,66 160,70 200,58 240,52 300,48"></polyline>
+                            <polyline fill="none" stroke="#1b3f86" stroke-width="3.2" points="0,88 40,82 80,76 120,68 160,64 200,56 240,44 300,38"></polyline>
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mock-view" data-view-panel="signals">
+                  <div class="signal-preview">
+                    <div class="signal-preview-header">
+                      <div class="signal-preview-title">Signal recommendations</div>
+                      <div class="signal-preview-tag">From latest upload</div>
+                    </div>
+                    <div class="signal-rec">
+                      <div class="signal-rec-item">
+                        <div class="signal-rec-top"><span class="signal-rec-name">Push renewal offer at Harbor Point</span><span class="signal-rec-priority">High priority</span></div>
+                        <div class="signal-rec-copy">Occupancy softened while concessions rose. Recommend targeted renewal push before expanding discounting.</div>
+                      </div>
+                      <div class="signal-rec-item">
+                        <div class="signal-rec-top"><span class="signal-rec-name">Review payroll and turns at Riverton</span><span class="attention-medium">Medium</span></div>
+                        <div class="signal-rec-copy">NOI pressure appears operational, not revenue-led. Focus next review on staffing variance and turn timing.</div>
+                      </div>
+                      <div class="signal-rec-item">
+                        <div class="signal-rec-top"><span class="signal-rec-name">Cleaning contract over budget by $300/month at Maple Row Residences</span><span class="attention-low">Low</span></div>
+                        <div class="signal-rec-copy">Review scope and renegotiate vendor pricing to reduce OpEx without affecting resident experience.</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mock-view" data-view-panel="market">
+                  <div class="signal-preview">
+                    <div class="signal-preview-header">
+                      <div class="signal-preview-title">Market context</div>
+                      <div class="signal-preview-tag">Weekly refresh</div>
+                    </div>
+                    <div class="market-grid">
+                      <div class="market-panel">
+                        <div class="market-panel-title">Competitor promo alerts</div>
+                        <div class="promo-list">
+                          <div class="promo-item">
+                            <div class="promo-top"><span class="promo-name">The Edison at Tampa</span><span class="promo-badge">2 weeks free</span></div>
+                            <div class="promo-copy">New concession launched on larger units within 2 miles of Harbor Point.</div>
+                          </div>
+                          <div class="promo-item">
+                            <div class="promo-top"><span class="promo-name">The Mason Riverview</span><span class="promo-badge">Fee waived</span></div>
+                            <div class="promo-copy">Admin fee removed as competitor pushes late-cycle occupancy.</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="market-side">
+                        <div class="market-side-title">Market signals</div>
+                        <div class="rate-card">
+                          <div class="rate-label">Avg asking rent</div>
+                          <div class="rate-value">$2,184</div>
+                          <div class="rate-delta">+1.8% vs last month</div>
+                        </div>
+                        <div class="market-alerts">
+                          <div class="alert-item">
+                            <div class="alert-top"><span class="alert-name">Concession intensity</span><span class="alert-badge">Rising</span></div>
+                            <div class="alert-copy">Competitive pressure is increasing around Harbor Point and Riverton.</div>
+                          </div>
+                          <div class="alert-item">
+                            <div class="alert-top"><span class="alert-name">Lease velocity</span><span class="attention-low">Stable</span></div>
+                            <div class="alert-copy">Broader market pacing remains steady despite localized promo activity.</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -575,227 +1542,224 @@
       </div>
     </section>
 
-    <section class="section">
-      <div class="value-grid">
-        <div class="card">
-          <h3>Find NOI risk earlier</h3>
-          <p>
-            Connect financial variance with operational changes before issues fully show up in month-end reporting.
-          </p>
+    <section class="section-dark">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <div class="section-kicker">Why teams care</div>
+            <h2>From manual review to faster action.</h2>
+            <p class="section-subcopy">Asset Signal helps teams move from fragmented review to more consistent, profit-focused decisions across the portfolio.</p>
+          </div>
         </div>
 
-        <div class="card">
-          <h3>Track leasing momentum</h3>
-          <p>
-            See changes in prelease and velocity sooner, so teams can react faster and more confidently.
-          </p>
-        </div>
-
-        <div class="card">
-          <h3>Monitor market pressure</h3>
-          <p>
-            Spot competitor pricing shifts and concession intensity around each asset with better context.
-          </p>
+        <div class="signals-grid">
+          <div class="signal-card">
+            <div class="signal-meta">Current</div>
+            <h3>Manual review slows down performance.</h3>
+            <ul class="signal-list">
+              <li>Variance review happens across disconnected files</li>
+              <li>Financial performance, leasing, and market context sit in separate workflows</li>
+              <li>Teams spend too much time finding issues and not enough time acting on them</li>
+            </ul>
+          </div>
+          <div class="signal-card">
+            <div class="signal-meta">With Asset Signal</div>
+            <h3>One workflow for priorities and action.</h3>
+            <ul class="signal-list">
+              <li>Upload one P&amp;L and surface what needs attention first</li>
+              <li>Get AI-backed recommendations tied to property and portfolio performance</li>
+              <li>Make more consistent decisions to protect profit, improve performance, and move faster</li>
+            </ul>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="section">
-      <div class="cta-box">
-        <div>
-          <h2>Bring signal clarity to your portfolio.</h2>
-          <p>
-            AssetSignal is designed for lean real estate teams that want faster insight across performance, leasing, and market risk.
-          </p>
+    <section class="section-light">
+      <div class="container">
+        <div class="cta-band">
+          <div class="cta-band-copy">
+            <div class="cta-band-title">Selective pilot access for a limited number of teams.</div>
+            <div class="cta-band-text">We’re opening Asset Signal to a small group of owners, operators, and asset managers looking for a faster, more consistent way to review performance and act on what matters most.</div>
+          </div>
+          <div class="hero-actions" style="margin-top:0;">
+            <button class="btn btn-primary open-modal" type="button">Apply to pilot</button>
+            <button class="btn open-modal" type="button">Request access</button>
+          </div>
         </div>
-        <button class="btn btn-primary cta-trigger" type="button" data-source="Request Access">
-          Request Access
-        </button>
       </div>
     </section>
+  </main>
 
-    <footer class="footer">
-      © 2026 AssetSignal. All rights reserved.
-    </footer>
-  </div>
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>© 2026 Asset Signal</div>
+      <div>AI-backed strategies for modern asset management.</div>
+    </div>
+  </footer>
 
-  <div class="modal-overlay" id="signupModal" onclick="handleOverlayClick(event)">
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-      <button class="modal-close" type="button" onclick="closeModal()" aria-label="Close">×</button>
+  <div class="modal" id="leadModal" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button class="modal-close" type="button" aria-label="Close">×</button>
+      <h3 id="modalTitle">See how Asset Signal could fit your workflow.</h3>
+      <p>Tell us a bit about your team and what you want help with. We’ll follow up with the most relevant demo, workflow, or pilot conversation.</p>
 
-      <h3 id="modalTitle">Join the AssetSignal pilot</h3>
-      <p>
-        We’re onboarding a small number of early users from real estate investment and asset management teams.
-      </p>
+      <form class="lead-form" id="leadForm" action="https://formspree.io/f/xeeravbj" method="POST">
+        <div class="form-grid">
+          <div class="field"><label for="name">Name</label><input id="name" name="name" type="text" placeholder="Your name" required /></div>
+          <div class="field"><label for="email">Work email</label><input id="email" name="email" type="email" placeholder="you@company.com" required /></div>
+          <div class="field full"><label for="company">Company</label><input id="company" name="company" type="text" placeholder="Your company" required /></div>
+          <div class="field full"><label for="help">What would you like help with?</label><textarea id="help" name="help" placeholder="Examples: portfolio visibility, P&amp;L review workflows, property attention flags, pilot access, or a product walkthrough." required></textarea></div>
+        </div>
 
-      <form
-        id="leadForm"
-        action="https://formspree.io/f/xeeravbj"
-        method="POST"
-      >
-        <input type="hidden" name="source" id="sourceField" value="Join Pilot" />
-        <input type="hidden" name="_subject" id="subjectField" value="AssetSignal Lead - Join Pilot" />
-        <input type="hidden" name="_captcha" value="false" />
+        <div class="form-actions">
+          <div class="form-note">Selective pilot spots are limited. We’ll only use this to follow up about Asset Signal.</div>
+          <button class="btn btn-primary submit-btn" id="submitBtn" type="submit">Request access</button>
+        </div>
 
-        <input type="text" name="name" placeholder="Your name" required />
-        <input type="email" name="email" placeholder="Work email" required />
-        <input type="text" name="company" placeholder="Company" />
-        <textarea name="message" placeholder="Anything you'd want AssetSignal to help with?"></textarea>
-
-        <button class="btn btn-primary" type="submit" id="submitButton">
-          Request Access
-        </button>
+        <div class="form-success" id="formSuccess" aria-live="polite">
+          <div class="form-success-title">Request received.</div>
+          <div class="form-success-copy">Thanks — we’ll review your submission and follow up if there’s a fit for the current pilot cohort.</div>
+        </div>
       </form>
-
-      <div class="status-message" id="statusMessage"></div>
-
-      <div class="fine-print">
-        Submissions go directly to your Formspree inbox.
-      </div>
     </div>
   </div>
 
   <script>
-    const modal = document.getElementById("signupModal");
-    const modalTitle = document.getElementById("modalTitle");
-    const sourceField = document.getElementById("sourceField");
-    const subjectField = document.getElementById("subjectField");
-    const leadForm = document.getElementById("leadForm");
-    const submitButton = document.getElementById("submitButton");
-    const statusMessage = document.getElementById("statusMessage");
-    const ctaButtons = document.querySelectorAll(".cta-trigger");
+    const modal = document.getElementById('leadModal');
+    const openButtons = document.querySelectorAll('.open-modal');
+    const closeButton = document.querySelector('.modal-close');
+    const leadForm = document.getElementById('leadForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const formSuccess = document.getElementById('formSuccess');
+    const mockPills = document.querySelectorAll('.mock-pill');
+    const mockViews = document.querySelectorAll('.mock-view');
+    const revealCards = document.querySelectorAll('.signal-card');
+    const revealBand = document.querySelector('.cta-band');
+    let mockRotation;
 
-    function openModal(source) {
-      modal.classList.add("show");
-      document.body.style.overflow = "hidden";
-      modalTitle.textContent = source;
-      sourceField.value = source;
-      subjectField.value = "AssetSignal Lead - " + source;
-      statusMessage.textContent = "";
-    }
+    const openModal = () => {
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    };
 
-    function closeModal() {
-      modal.classList.remove("show");
-      document.body.style.overflow = "";
-    }
+    const closeModal = () => {
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    };
 
-    function handleOverlayClick(event) {
-      if (event.target.id === "signupModal") {
-        closeModal();
-      }
-    }
+    openButtons.forEach(btn => btn.addEventListener('click', openModal));
+    closeButton.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+    });
 
-    ctaButtons.forEach((button) => {
-      button.addEventListener("click", function () {
-        const source = this.getAttribute("data-source") || "Join Pilot";
-        openModal(source);
+    const setMockView = (viewName) => {
+      mockPills.forEach(pill => pill.classList.toggle('active', pill.dataset.view === viewName));
+      mockViews.forEach(view => view.classList.toggle('active', view.dataset.viewPanel === viewName));
+    };
+
+    const startMockRotation = () => {
+      const order = ['portfolio', 'signals', 'market'];
+      let index = 0;
+      clearInterval(mockRotation);
+      mockRotation = setInterval(() => {
+        index = (index + 1) % order.length;
+        setMockView(order[index]);
+      }, 9000);
+    };
+
+    mockPills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        setMockView(pill.dataset.view);
+        startMockRotation();
       });
     });
 
-    leadForm.addEventListener("submit", async function (event) {
-      event.preventDefault();
+    startMockRotation();
 
-      submitButton.disabled = true;
-      submitButton.style.opacity = "0.7";
-      statusMessage.textContent = "Submitting...";
+    document.querySelectorAll('.portfolio-table-wrap').forEach((wrap) => {
+      let isPointerDown = false;
+      let startX = 0;
+      let scrollLeft = 0;
 
-      const formData = new FormData(leadForm);
+      wrap.addEventListener('pointerdown', (e) => {
+        isPointerDown = true;
+        clearInterval(mockRotation);
+        startX = e.clientX;
+        scrollLeft = wrap.scrollLeft;
+      });
 
-      try {
-        const response = await fetch(leadForm.action, {
-          method: "POST",
-          body: formData,
-          headers: {
-            "Accept": "application/json"
+      const stopDragging = () => {
+        if (!isPointerDown) return;
+        isPointerDown = false;
+        startMockRotation();
+      };
+
+      wrap.addEventListener('pointerup', stopDragging);
+      wrap.addEventListener('pointerleave', stopDragging);
+      wrap.addEventListener('pointercancel', stopDragging);
+
+      wrap.addEventListener('pointermove', (e) => {
+        if (!isPointerDown) return;
+        e.preventDefault();
+        const walk = (e.clientX - startX) * 1.15;
+        wrap.scrollLeft = scrollLeft - walk;
+      });
+    });
+
+    if ('IntersectionObserver' in window) {
+      const revealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
           }
         });
+      }, {
+        threshold: 0.22,
+        rootMargin: '0px 0px -40px 0px'
+      });
 
-        if (response.ok) {
-          statusMessage.textContent = "Thanks — your request has been submitted.";
-          leadForm.reset();
+      revealCards.forEach((card) => revealObserver.observe(card));
+      if (revealBand) revealObserver.observe(revealBand);
+    } else {
+      revealCards.forEach((card) => card.classList.add('is-visible'));
+      if (revealBand) revealBand.classList.add('is-visible');
+    }
 
-          setTimeout(() => {
-            closeModal();
-            sourceField.value = "Join Pilot";
-            subjectField.value = "AssetSignal Lead - Join Pilot";
-            modalTitle.textContent = "Join the AssetSignal pilot";
-            statusMessage.textContent = "";
-          }, 1200);
-        } else {
-          statusMessage.textContent = "Something went wrong. Please try again.";
+    if (leadForm) {
+      leadForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        submitBtn.classList.add('loading');
+        submitBtn.textContent = 'Submitting...';
+        try {
+          const response = await fetch(leadForm.action, {
+            method: 'POST',
+            body: new FormData(leadForm),
+            headers: { 'Accept': 'application/json' }
+          });
+          if (response.ok) {
+            leadForm.reset();
+            formSuccess.classList.add('show');
+            submitBtn.textContent = 'Submitted';
+          } else {
+            submitBtn.classList.remove('loading');
+            submitBtn.textContent = 'Try again';
+            alert('Something went wrong. Please try again.');
+          }
+        } catch (error) {
+          submitBtn.classList.remove('loading');
+          submitBtn.textContent = 'Try again';
+          alert('Something went wrong. Please try again.');
         }
-      } catch (error) {
-        statusMessage.textContent = "Something went wrong. Please try again.";
-      } finally {
-        submitButton.disabled = false;
-        submitButton.style.opacity = "1";
-      }
-    });
-
-    document.addEventListener("keydown", function (event) {
-      if (event.key === "Escape") {
-        closeModal();
-      }
-    });
-
-    const slides = document.querySelectorAll(".slide");
-    const dots = document.querySelectorAll(".slider-dot");
-    const prevSlideButton = document.getElementById("prevSlide");
-    const nextSlideButton = document.getElementById("nextSlide");
-
-    let currentSlide = 0;
-    let autoRotate;
-
-    function showSlide(index) {
-      slides.forEach((slide, i) => {
-        slide.classList.toggle("active", i === index);
       });
-
-      dots.forEach((dot, i) => {
-        dot.classList.toggle("active", i === index);
-      });
-
-      currentSlide = index;
     }
-
-    function nextSlide() {
-      const nextIndex = (currentSlide + 1) % slides.length;
-      showSlide(nextIndex);
-    }
-
-    function prevSlide() {
-      const prevIndex = (currentSlide - 1 + slides.length) % slides.length;
-      showSlide(prevIndex);
-    }
-
-    function startAutoRotate() {
-      autoRotate = setInterval(nextSlide, 3000);
-    }
-
-    function resetAutoRotate() {
-      clearInterval(autoRotate);
-      startAutoRotate();
-    }
-
-    dots.forEach((dot, index) => {
-      dot.addEventListener("click", () => {
-        showSlide(index);
-        resetAutoRotate();
-      });
-    });
-
-    prevSlideButton.addEventListener("click", () => {
-      prevSlide();
-      resetAutoRotate();
-    });
-
-    nextSlideButton.addEventListener("click", () => {
-      nextSlide();
-      resetAutoRotate();
-    });
-
-    showSlide(0);
-    startAutoRotate();
   </script>
 </body>
 </html>
