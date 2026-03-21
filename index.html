@@ -1370,8 +1370,8 @@
         <span class="brand-text">Asset Signal</span>
       </a>
       <div class="nav-actions">
-        <button class="btn open-modal" type="button">View demo</button>
-        <button class="btn btn-primary open-modal" type="button">Apply to pilot</button>
+        <button class="btn open-modal" type="button" data-source="nav_view_demo">View demo</button>
+        <button class="btn btn-primary open-modal" type="button" data-source="nav_apply_to_pilot">Apply to pilot</button>
       </div>
     </div>
   </header>
@@ -1384,8 +1384,8 @@
           <h1>AI-backed strategies,<br>Built for real estate.</h1>
           <p class="hero-copy">Turn property data into clearer priorities, more consistent recommendations, and better profit decisions across the portfolio.</p>
           <div class="hero-actions">
-            <button class="btn open-modal" type="button">Apply to pilot</button>
-            <button class="btn btn-primary open-modal" type="button">Upload P&amp;L</button>
+            <button class="btn open-modal" type="button" data-source="hero_apply_to_pilot">Apply to pilot</button>
+            <button class="btn btn-primary open-modal" type="button" data-source="hero_upload_pnl">Upload P&amp;L</button>
           </div>
           <div class="hero-meta">Designed to help teams act faster, stay consistent, and protect portfolio performance.</div>
         </div>
@@ -1583,8 +1583,8 @@
             <div class="cta-band-text">We’re opening Asset Signal to a small group of owners, operators, and asset managers looking for a faster, more consistent way to review performance and act on what matters most.</div>
           </div>
           <div class="hero-actions" style="margin-top:0;">
-            <button class="btn btn-primary open-modal" type="button">Apply to pilot</button>
-            <button class="btn open-modal" type="button">Request access</button>
+            <button class="btn btn-primary open-modal" type="button" data-source="pilot_apply_to_pilot">Apply to pilot</button>
+            <button class="btn open-modal" type="button" data-source="pilot_request_access">Request access</button>
           </div>
         </div>
       </div>
@@ -1605,6 +1605,7 @@
       <p>Tell us a bit about your team and what you want help with. We’ll follow up with the most relevant demo, workflow, or pilot conversation.</p>
 
       <form class="lead-form" id="leadForm" action="https://formspree.io/f/xeeravbj" method="POST">
+        <input type="hidden" id="entryPointField" name="entry_point" value="unknown" />
         <div class="form-grid">
           <div class="field"><label for="name">Name</label><input id="name" name="name" type="text" placeholder="Your name" required /></div>
           <div class="field"><label for="email">Work email</label><input id="email" name="email" type="email" placeholder="you@company.com" required /></div>
@@ -1632,13 +1633,17 @@
     const leadForm = document.getElementById('leadForm');
     const submitBtn = document.getElementById('submitBtn');
     const formSuccess = document.getElementById('formSuccess');
+    const entryPointField = document.getElementById('entryPointField');
+    let currentEntryPoint = 'unknown';
     const mockPills = document.querySelectorAll('.mock-pill');
     const mockViews = document.querySelectorAll('.mock-view');
     const revealCards = document.querySelectorAll('.signal-card');
     const revealBand = document.querySelector('.cta-band');
     let mockRotation;
 
-    const openModal = () => {
+    const openModal = (source = 'unknown') => {
+      currentEntryPoint = source;
+      if (entryPointField) entryPointField.value = source;
       modal.classList.add('open');
       modal.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
@@ -1650,7 +1655,7 @@
       document.body.style.overflow = '';
     };
 
-    openButtons.forEach(btn => btn.addEventListener('click', openModal));
+    openButtons.forEach(btn => btn.addEventListener('click', () => openModal(btn.dataset.source || 'unknown')));
     closeButton.addEventListener('click', closeModal);
     modal.addEventListener('click', (e) => {
       if (e.target === modal) closeModal();
@@ -1746,6 +1751,8 @@
           });
           if (response.ok) {
             leadForm.reset();
+            currentEntryPoint = 'submitted';
+            if (entryPointField) entryPointField.value = 'submitted';
             formSuccess.classList.add('show');
             submitBtn.textContent = 'Submitted';
           } else {
