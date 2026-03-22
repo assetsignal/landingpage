@@ -1344,6 +1344,10 @@
     }
 
     @media (max-width: 720px) {
+      .mock-pill[data-view="portfolio"],
+      .mock-view[data-view-panel="portfolio"] {
+        display: none !important;
+      }
       .container { width: min(var(--max), calc(100% - 28px)); }
       .nav { height: auto; padding: 14px 0; align-items: flex-start; }
       .nav, .nav-actions, .hero-actions, .form-actions { flex-wrap: wrap; }
@@ -1670,7 +1674,8 @@
     };
 
     const startMockRotation = () => {
-      const order = ['portfolio', 'signals', 'market'];
+      const isMobile = window.innerWidth <= 720;
+      const order = isMobile ? ['signals', 'market'] : ['portfolio', 'signals', 'market'];
       let index = 0;
       clearInterval(mockRotation);
       mockRotation = setInterval(() => {
@@ -1681,12 +1686,23 @@
 
     mockPills.forEach(pill => {
       pill.addEventListener('click', () => {
+        const isMobile = window.innerWidth <= 720;
+        if (isMobile && pill.dataset.view === 'portfolio') return;
         setMockView(pill.dataset.view);
         startMockRotation();
       });
     });
 
-    startMockRotation();
+    const applyResponsiveMockView = () => {
+      const isMobile = window.innerWidth <= 720;
+      if (isMobile && document.querySelector('.mock-view.active[data-view-panel="portfolio"]')) {
+        setMockView('signals');
+      }
+      startMockRotation();
+    };
+
+    applyResponsiveMockView();
+    window.addEventListener('resize', applyResponsiveMockView);
 
     document.querySelectorAll('.portfolio-table-wrap').forEach((wrap) => {
       let isPointerDown = false;
