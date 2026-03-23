@@ -4,19 +4,24 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Asset Signal</title>
+
   <meta name="description" content="Turn property data into clearer priorities, more consistent recommendations, and better profit decisions across the portfolio." />
+
   <meta property="og:title" content="Asset Signal" />
   <meta property="og:description" content="Turn property data into clearer priorities, more consistent recommendations, and better profit decisions across the portfolio." />
+  <meta name="image" property="og:image" content="https://www.assetsignal.ai/images/ogimage.png">
   <meta property="og:image" content="https://www.assetsignal.ai/images/ogimage.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:url" content="https://www.assetsignal.ai/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Asset Signal" />
+
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Asset Signal" />
   <meta name="twitter:description" content="Turn property data into clearer priorities, more consistent recommendations, and better profit decisions across the portfolio." />
   <meta name="twitter:image" content="https://www.assetsignal.ai/images/ogimage.png" />
+
   <style>
     :root {
       --navy-950: #081124;
@@ -1259,16 +1264,6 @@
       border-radius: 20px;
     }
 
-    .modal-card {
-      width: min(100%, 560px);
-      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
-      border-radius: 24px;
-      border: 1px solid var(--line);
-      box-shadow: 0 30px 80px rgba(18, 36, 84, 0.22);
-      padding: 24px;
-      position: relative;
-    }
-
     .modal-close {
       position: absolute;
       top: 14px;
@@ -1574,6 +1569,7 @@
                     </div>
                   </div>
                 </div>
+
               </div>
             </div>
           </div>
@@ -1640,18 +1636,32 @@
   <div class="modal" id="leadModal" aria-hidden="true">
     <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
       <button class="modal-close" type="button" aria-label="Close">×</button>
+
       <div class="modal-intro">
-      <h3 id="modalTitle">See how Asset Signal could fit your workflow.</h3>
-      <p>Tell us a bit about your team and what you want help with. We’ll follow up with the most relevant demo, workflow, or pilot conversation.</p>
+        <h3 id="modalTitle">See how Asset Signal could fit your workflow.</h3>
+        <p>Tell us a bit about your team and what you want help with. We’ll follow up with the most relevant demo, workflow, or pilot conversation.</p>
       </div>
 
       <form class="lead-form" id="leadForm" action="https://formspree.io/f/xeeravbj" method="POST">
         <input type="hidden" id="entryPointField" name="entry_point" value="unknown" />
+
         <div class="form-grid">
-          <div class="field"><label for="name">Name</label><input id="name" name="name" type="text" placeholder="Your name" required /></div>
-          <div class="field"><label for="email">Work email</label><input id="email" name="email" type="email" placeholder="you@company.com" required /></div>
-          <div class="field full"><label for="company">Company</label><input id="company" name="company" type="text" placeholder="Your company" required /></div>
-          <div class="field full"><label for="help">What would you like help with?</label><textarea id="help" name="help" placeholder="Examples: portfolio visibility, P&amp;L review workflows, property attention flags, pilot access, or a product walkthrough." required></textarea></div>
+          <div class="field">
+            <label for="name">Name</label>
+            <input id="name" name="name" type="text" placeholder="Your name" required />
+          </div>
+          <div class="field">
+            <label for="email">Work email</label>
+            <input id="email" name="email" type="email" placeholder="you@company.com" required />
+          </div>
+          <div class="field full">
+            <label for="company">Company</label>
+            <input id="company" name="company" type="text" placeholder="Your company" required />
+          </div>
+          <div class="field full">
+            <label for="help">What would you like help with?</label>
+            <textarea id="help" name="help" placeholder="Examples: portfolio visibility, P&amp;L review workflows, property attention flags, pilot access, or a product walkthrough." required></textarea>
+          </div>
         </div>
 
         <div class="form-actions">
@@ -1684,23 +1694,28 @@
 
     const openModal = (source = 'unknown') => {
       if (entryPointField) entryPointField.value = source;
+
+      if (modalCard) {
+        modalCard.classList.remove('is-success', 'success-only');
+      }
+
       if (leadForm) {
         leadForm.classList.remove('hidden');
         leadForm.style.display = 'grid';
         leadForm.reset();
         if (entryPointField) entryPointField.value = source;
       }
+
       if (formSuccess) {
         formSuccess.classList.remove('show');
         formSuccess.style.display = 'none';
       }
+
       if (submitBtn) {
         submitBtn.classList.remove('loading');
         submitBtn.textContent = 'Request access';
       }
-      if (modalCard) {
-        modalCard.classList.remove('is-success', 'success-only');
-      }
+
       modal.classList.add('open');
       modal.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
@@ -1714,9 +1729,11 @@
 
     openButtons.forEach(btn => btn.addEventListener('click', () => openModal(btn.dataset.source || 'unknown')));
     closeButton.addEventListener('click', closeModal);
+
     modal.addEventListener('click', (e) => {
       if (e.target === modal) closeModal();
     });
+
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
     });
@@ -1812,20 +1829,24 @@
         e.preventDefault();
         submitBtn.classList.add('loading');
         submitBtn.textContent = 'Submitting...';
+
         try {
           const response = await fetch(leadForm.action, {
             method: 'POST',
             body: new FormData(leadForm),
             headers: { 'Accept': 'application/json' }
           });
+
           if (response.ok) {
             leadForm.classList.add('hidden');
             leadForm.style.display = 'none';
             formSuccess.classList.add('show');
             formSuccess.style.display = 'block';
+
             if (modalCard) {
               modalCard.classList.add('is-success', 'success-only');
             }
+
             submitBtn.classList.remove('loading');
             submitBtn.textContent = 'Request access';
           } else {
